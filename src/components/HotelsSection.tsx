@@ -1,0 +1,159 @@
+"use client";
+
+import React, { useState, useRef } from "react";
+import Image from "next/image";
+import { Star, Heart, ChevronLeft, ChevronRight, ArrowRight, MapPin } from "lucide-react";
+import { hotelsData, Hotel } from "@/data/jaisalmerData";
+import { useCurrency } from "@/context/CurrencyContext";
+
+interface HotelsSectionProps {
+  onSelectHotel: (hotel: Hotel) => void;
+  onViewAll: () => void;
+}
+
+export default function HotelsSection({ onSelectHotel, onViewAll }: HotelsSectionProps) {
+  const { formatPrice } = useCurrency();
+  const [favorites, setFavorites] = useState<Record<string, boolean>>({});
+  const carouselRef = useRef<HTMLDivElement>(null);
+
+  const toggleFavorite = (id: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    setFavorites((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
+  };
+
+  const handleScroll = (direction: "left" | "right") => {
+    if (carouselRef.current) {
+      const scrollAmount = 300;
+      carouselRef.current.scrollBy({
+        left: direction === "left" ? -scrollAmount : scrollAmount,
+        behavior: "smooth",
+      });
+    }
+  };
+
+  return (
+    <section id="hotels" className="py-12 sm:py-16 lg:py-20 bg-white border-t border-border-light scroll-mt-20">
+      <div className="max-w-[1350px] mx-auto px-3 sm:px-6">
+        {/* Section Header (Centered on mobile, left on desktop) */}
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 sm:gap-4 mb-6 sm:mb-8 text-center sm:text-left items-center sm:items-start">
+          <div className="flex flex-col items-center sm:items-start w-full sm:w-auto">
+            <span className="block text-center sm:text-left w-full font-sans text-[11px] sm:text-xs font-bold uppercase tracking-[0.22em] text-gold mb-1.5 sm:mb-2">
+              ROYAL HERITAGE STAYS
+            </span>
+            <h2 className="block text-center sm:text-left w-full font-serif text-2xl sm:text-4xl lg:text-[2.75rem] font-bold text-teal tracking-tight my-1 sm:my-2">
+              Featured Hotels in Jaisalmer
+            </h2>
+            <p className="block text-center sm:text-left w-full font-sans text-xs sm:text-base text-text-muted mt-0.5 sm:mt-1 max-w-xl mx-auto sm:mx-0">
+              Stay in authentic 18th-century yellow sandstone havelis and luxury palace resorts
+            </p>
+          </div>
+
+          {/* Actions & Carousel Nav */}
+          <div className="flex items-center justify-between sm:justify-end gap-3 sm:gap-4 shrink-0 pt-2 sm:pt-0 w-full sm:w-auto">
+            <button 
+              className="inline-flex items-center gap-1.5 text-gold font-sans font-semibold text-xs sm:text-sm hover:text-gold-dark hover:translate-x-1 transition-all" 
+              onClick={onViewAll}
+            >
+              <span>View All Hotels</span>
+              <ArrowRight size={14} />
+            </button>
+            <div className="flex items-center gap-1.5 sm:gap-2">
+              <button 
+                className="w-8 h-8 sm:w-9 sm:h-9 rounded-full border border-border-light bg-white flex items-center justify-center text-text-main shadow-xs transition-all duration-300 hover:bg-gold hover:text-white hover:border-gold" 
+                onClick={() => handleScroll("left")}
+                aria-label="Previous hotels"
+              >
+                <ChevronLeft size={16} />
+              </button>
+              <button 
+                className="w-8 h-8 sm:w-9 sm:h-9 rounded-full border border-border-light bg-white flex items-center justify-center text-text-main shadow-xs transition-all duration-300 hover:bg-gold hover:text-white hover:border-gold" 
+                onClick={() => handleScroll("right")}
+                aria-label="Next hotels"
+              >
+                <ChevronRight size={16} />
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Hotels Grid / Carousel */}
+        <div 
+          className="flex overflow-x-auto no-scrollbar gap-3.5 sm:gap-6 pb-4 snap-x snap-mandatory lg:grid lg:grid-cols-4 pt-1 px-1 sm:px-0" 
+          ref={carouselRef}
+        >
+          {hotelsData.map((hotel) => {
+            const isFav = favorites[hotel.id];
+            return (
+              <div 
+                key={hotel.id} 
+                className="w-[82vw] max-w-[290px] sm:w-[320px] lg:w-auto shrink-0 snap-start group flex flex-col bg-white rounded-[6px] overflow-hidden border border-border-light shadow-xs sm:shadow-sm transition-all duration-300 hover:shadow-card hover:-translate-y-1.5 hover:border-gold/50 cursor-pointer"
+                onClick={() => onSelectHotel(hotel)}
+              >
+                {/* Card Image */}
+                <div className="relative h-44 sm:h-52 w-full overflow-hidden bg-cream shrink-0">
+                  <Image
+                    src={hotel.image}
+                    alt={hotel.name}
+                    fill
+                    className="object-cover transition-transform duration-700 ease-out group-hover:scale-108"
+                    sizes="(max-width: 768px) 85vw, 320px"
+                  />
+                  {/* Heart Wishlist Button */}
+                  <button
+                    className={`absolute top-2.5 right-2.5 sm:top-3 sm:right-3 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 z-10 ${
+                      isFav ? "bg-white shadow-md scale-105" : "bg-black/35 backdrop-blur-sm hover:bg-black/60"
+                    }`}
+                    onClick={(e) => toggleFavorite(hotel.id, e)}
+                    aria-label="Add to wishlist"
+                  >
+                    <Heart 
+                      size={15} 
+                      className={isFav ? "fill-rose-500 text-rose-500" : "text-white"} 
+                    />
+                  </button>
+                </div>
+
+                {/* Card Body */}
+                <div className="p-3.5 sm:p-5 flex flex-col flex-1">
+                  <h3 className="font-serif font-bold text-base sm:text-lg text-text-main group-hover:text-gold transition-colors line-clamp-1 mb-1 sm:mb-1.5">
+                    {hotel.name}
+                  </h3>
+
+                  {/* Rating & Reviews */}
+                  <div className="flex items-center gap-1.5 mb-1 sm:mb-1.5">
+                    <Star size={13} className="fill-gold text-gold" />
+                    <span className="font-sans font-bold text-xs text-text-main">{hotel.rating}</span>
+                    <span className="font-sans text-[11px] text-text-muted">({hotel.reviews})</span>
+                  </div>
+
+                  {/* Location */}
+                  <p className="flex items-center gap-1 font-sans text-[11px] sm:text-xs text-text-muted mb-3 sm:mb-4">
+                    <MapPin size={12} className="text-gold shrink-0" />
+                    <span className="truncate">{hotel.location}</span>
+                  </p>
+
+                  {/* Price Row */}
+                  <div className="mt-auto pt-2.5 sm:pt-3.5 border-t border-dashed border-border-light flex items-baseline justify-between">
+                    <div>
+                      <span className="font-sans text-[11px] text-text-muted">From </span>
+                      <span className="font-sans font-bold text-sm sm:text-base text-gold">{formatPrice(hotel.price)}</span>
+                      <span className="font-sans text-[11px] text-text-muted"> / night</span>
+                    </div>
+
+                    <span className="inline-flex items-center gap-1 font-sans font-semibold text-xs text-gold group-hover:text-gold-dark group-hover:translate-x-1 transition-all">
+                      <span>View</span>
+                      <ArrowRight size={13} />
+                    </span>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
