@@ -776,7 +776,7 @@ function CampsHotelsContent() {
 
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-4 w-full sm:w-auto">
               <a
-                href="https://wa.me/919876543210?text=Hello!%20I%20need%20help%20choosing%20between%20Jaisalmer%20hotels%20and%20desert%20camps."
+                href="https://wa.me/917877221729?text=Hello!%20I%20need%20help%20choosing%20between%20Jaisalmer%20hotels%20and%20desert%20camps."
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20b858] text-white px-5 py-2.5 rounded-lg text-xs sm:text-sm font-bold shadow-md transition-all cursor-pointer text-center"
@@ -786,11 +786,11 @@ function CampsHotelsContent() {
               </a>
 
               <a
-                href="tel:+919876543210"
+                href="tel:+917877221729"
                 className="inline-flex items-center justify-center gap-2 bg-white/15 hover:bg-white/25 text-white px-5 py-2.5 rounded-lg text-xs sm:text-sm font-bold border border-white/25 transition-all cursor-pointer text-center"
               >
                 <Phone size={15} />
-                <span>Call +91 98765 43210</span>
+                <span>Call +91 78772 21729</span>
               </a>
 
               <button

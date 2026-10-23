@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Phone, Mail, MapPin, Globe } from "lucide-react";
+import { Phone, Mail, MapPin, Globe, MessageCircle } from "lucide-react";
 
 export default function Footer() {
   return (
@@ -92,6 +92,7 @@ export default function Footer() {
                 <li><Link href="/camps-hotels" className="hover:text-gold-dark transition-colors font-medium text-gold-dark">Camps &amp; Hotels</Link></li>
                 <li><Link href="/tours-places" className="hover:text-gold-dark transition-colors font-medium text-gold-dark">Tours &amp; Places</Link></li>
                 <li><Link href="/packages" className="hover:text-gold-dark transition-colors font-medium text-gold-dark">Holiday Packages</Link></li>
+                <li><Link href="/gallery" className="hover:text-gold-dark transition-colors font-medium text-gold-dark">Photo Gallery</Link></li>
                 <li><Link href="/about" className="hover:text-gold-dark transition-colors">About Us</Link></li>
                 <li><Link href="/contact" className="hover:text-gold-dark transition-colors">Contact</Link></li>
               </ul>
@@ -115,12 +116,23 @@ export default function Footer() {
             <h4 className="font-serif font-bold text-sm sm:text-base text-text-main mb-3 sm:mb-4">Contact Concierge</h4>
             <div className="flex flex-col gap-2.5 sm:gap-3 font-sans text-xs sm:text-sm text-text-muted">
               <div className="flex items-center gap-2.5 sm:gap-3">
+                <MessageCircle size={14} className="text-[#25D366] shrink-0 sm:w-[15px] sm:h-[15px]" />
+                <a 
+                  href="https://wa.me/917877221729?text=Hello!%20I%20would%20like%20to%20inquire%20about%20West%20Camp%20Jaisalmer."
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-[#25D366] font-medium text-[#123038] transition-colors"
+                >
+                 +91 78772 21729
+                </a>
+              </div>
+              <div className="flex items-center gap-2.5 sm:gap-3">
                 <Phone size={14} className="text-gold shrink-0 sm:w-[15px] sm:h-[15px]" />
-                <a href="tel:+919876543210" className="hover:text-gold transition-colors">+91 98765 43210</a>
+                <a href="tel:+917877221729" className="hover:text-gold transition-colors">+91 78772 21729</a>
               </div>
               <div className="flex items-center gap-2.5 sm:gap-3">
                 <Mail size={14} className="text-gold shrink-0 sm:w-[15px] sm:h-[15px]" />
-                <a href="mailto:hello@jaisalmertrips.in" className="hover:text-gold transition-colors truncate">hello@jaisalmertrips.in</a>
+                <a href="mailto:bk3661758@gmail.com" className="hover:text-gold transition-colors truncate">bk3661758@gmail.com</a>
               </div>
               <div className="flex items-start gap-2.5 sm:gap-3">
                 <MapPin size={14} className="text-gold shrink-0 mt-0.5 sm:w-[15px] sm:h-[15px]" />

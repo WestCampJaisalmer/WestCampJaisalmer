@@ -18,10 +18,14 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import PlanTripModal from "@/components/PlanTripModal";
 import SearchResultsModal from "@/components/SearchResultsModal";
+import BookingModal from "@/components/BookingModal";
 
 export default function AboutPage() {
   const [isPlanTripOpen, setIsPlanTripOpen] = useState(false);
   const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState<any>(null);
+  const [selectedType, setSelectedType] = useState<any>(null);
+  const [isBookingOpen, setIsBookingOpen] = useState(false);
 
   return (
     <div className="min-h-screen flex flex-col bg-[#FAF6F0] font-sans text-[#1F2022] antialiased">
@@ -300,9 +304,26 @@ export default function AboutPage() {
         isOpen={isSearchModalOpen}
         onClose={() => setIsSearchModalOpen(false)}
         searchParams={{ destination: "all" }}
-        onSelectItem={() => {}}
+        onSelectItem={(item, type) => {
+          setIsSearchModalOpen(false);
+          setSelectedItem(item);
+          setSelectedType(type);
+          setIsBookingOpen(true);
+        }}
       />
 
+      {/* Booking Modal */}
+      {selectedItem && (
+        <BookingModal
+          item={selectedItem}
+          type={selectedType}
+          isOpen={isBookingOpen}
+          onClose={() => {
+            setIsBookingOpen(false);
+            setSelectedItem(null);
+          }}
+        />
+      )}
     </div>
   );
 }

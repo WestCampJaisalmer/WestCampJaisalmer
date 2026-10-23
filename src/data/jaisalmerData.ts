@@ -218,7 +218,7 @@ export const destinationsData: Destination[] = [
     id: "jaisalmer-fort",
     name: "Jaisalmer Fort",
     subtitle: "The Golden Fort",
-    image: "/images/destinations/dest-jaisalmer-fort.jpg",
+    image: "/images/contacts/contact_02.png",
     distance: "City Center",
     description: "A UNESCO World Heritage site and one of the very few living forts in the world, built in 1156 AD."
   },
@@ -226,7 +226,7 @@ export const destinationsData: Destination[] = [
     id: "sam-sand-dunes",
     name: "Sam Sand Dunes",
     subtitle: "Desert Adventure",
-    image: "/images/destinations/dest-sam-dunes.jpg",
+    image: "/images/gallery_img/img-7.jpeg",
     distance: "40 km from city",
     description: "The most popular dune destination in Jaisalmer, known for spectacular 30-meter ripples and lively night camps."
   },
@@ -242,7 +242,7 @@ export const destinationsData: Destination[] = [
     id: "gadisar-lake",
     name: "Gadisar Lake",
     subtitle: "Serene Beauty",
-    image: "/images/destinations/dest-gadisar-lake.jpg",
+    image: "/images/gallery_img/img-10.jpeg",
     distance: "2 km from fort",
     description: "A picturesque rainwater reservoir adorned with sculpted chhatris, shrines, and visiting migratory birds."
   },

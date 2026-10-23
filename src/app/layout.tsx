@@ -30,7 +30,7 @@ export const metadata: Metadata = {
 };
 
 import { CurrencyProvider } from "@/context/CurrencyContext";
-import ScrollToTop from "@/components/ScrollToTop";
+import FloatingButtons from "@/components/FloatingButtons";
 
 export default function RootLayout({
   children,
@@ -50,7 +50,7 @@ export default function RootLayout({
       <body className="font-sans antialiased text-text-main bg-cream">
         <CurrencyProvider>
           {children}
-          <ScrollToTop />
+          <FloatingButtons />
         </CurrencyProvider>
       </body>
     </html>

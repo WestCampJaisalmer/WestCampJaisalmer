@@ -28,6 +28,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import PlanTripModal from "@/components/PlanTripModal";
 import SearchResultsModal from "@/components/SearchResultsModal";
+import { openWhatsApp, getWhatsAppUrl } from "@/utils/whatsapp";
 
 export default function ContactPage() {
   // Modal states
@@ -49,6 +50,7 @@ export default function ContactPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [formError, setFormError] = useState("");
+  const [lastWhatsAppUrl, setLastWhatsAppUrl] = useState("");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -65,11 +67,26 @@ export default function ContactPage() {
     setFormError("");
     setIsSubmitting(true);
 
-    // Simulate fast submission feedback
+    const message = `📩 *NEW CONTACT INQUIRY - WEST CAMP JAISALMER* 📩
+
+👤 *Full Name:* ${formData.fullName.trim()}
+📧 *Email Address:* ${formData.email.trim()}
+📱 *Phone Number:* ${formData.phone.trim() || "Not provided"}
+📅 *Travel Date:* ${formData.travelDate || "Flexible / Not decided"}
+🎯 *Subject:* ${formData.subject}
+💬 *Message:*
+${formData.message.trim()}
+
+_Please respond via WhatsApp or call._`;
+
+    const url = getWhatsAppUrl(message);
+    setLastWhatsAppUrl(url);
+    openWhatsApp(message);
+
     setTimeout(() => {
       setIsSubmitting(false);
       setIsSubmitted(true);
-    }, 800);
+    }, 400);
   };
 
   const scrollToLocation = () => {
@@ -225,10 +242,10 @@ export default function ContactPage() {
                   </div>
                   <div className="flex flex-col">
                     <a
-                      href="tel:+919876543210"
+                      href="tel:+917877221729"
                       className="font-sans font-bold text-xs sm:text-sm text-[#1B2B34] hover:text-[#B07129] transition-colors"
                     >
-                      +91 98765 43210
+                      +91 78772 21729
                     </a>
                     <span className="font-sans text-[11px] text-[#7D7973]">
                       Mon - Sun, 8:00 AM - 10:00 PM
@@ -243,10 +260,10 @@ export default function ContactPage() {
                   </div>
                   <div className="flex flex-col">
                     <a
-                      href="mailto:hello@jaisalmertrips.in"
+                      href="mailto:bk3661758@gmail.com"
                       className="font-sans font-bold text-xs sm:text-sm text-[#1B2B34] hover:text-[#B07129] transition-colors break-all"
                     >
-                      hello@jaisalmertrips.in
+                      bk3661758@gmail.com
                     </a>
                     <span className="font-sans text-[11px] text-[#7D7973]">
                       We reply within 24 hours
@@ -361,32 +378,45 @@ export default function ContactPage() {
 
             {isSubmitted ? (
               <div className="bg-[#FAF6EE] border border-[#ECDCC7] rounded-xl p-6 sm:p-8 text-center my-4 animate-in fade-in zoom-in-95 duration-300">
-                <div className="w-14 h-14 bg-[#B07129]/15 text-[#B07129] rounded-full flex items-center justify-center mx-auto mb-3">
+                <div className="w-14 h-14 bg-[#E8F8EE] text-[#25D366] rounded-full flex items-center justify-center mx-auto mb-3">
                   <CheckCircle2 size={32} />
                 </div>
                 <h3 className="font-serif text-xl font-bold text-[#123038] mb-1">
-                  Message Sent Successfully!
+                  Inquiry Sent on WhatsApp!
                 </h3>
                 <p className="font-sans text-xs sm:text-sm text-[#63615C] max-w-md mx-auto mb-5 leading-relaxed">
-                  Thank you, <strong>{formData.fullName}</strong>. Our local Jaisalmer travel desk has received your request and will contact you via email or phone within 24 hours.
+                  Thank you, <strong>{formData.fullName}</strong>. Your message has been prepared for our Jaisalmer travel desk on WhatsApp. We will reply promptly.
                 </p>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setIsSubmitted(false);
-                    setFormData({
-                      fullName: "",
-                      email: "",
-                      phone: "",
-                      travelDate: "",
-                      subject: "",
-                      message: "",
-                    });
-                  }}
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#AF6E26] text-white font-sans text-xs font-semibold hover:bg-[#975D1D] transition-all shadow-xs"
-                >
-                  <span>Send Another Message</span>
-                </button>
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-2.5">
+                  {lastWhatsAppUrl && (
+                    <a
+                      href={lastWhatsAppUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#25D366] text-white font-sans text-xs font-bold hover:bg-[#20bd5a] transition-all shadow-xs"
+                    >
+                      <MessageCircle size={16} />
+                      <span>Chat on WhatsApp</span>
+                    </a>
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsSubmitted(false);
+                      setFormData({
+                        fullName: "",
+                        email: "",
+                        phone: "",
+                        travelDate: "",
+                        subject: "",
+                        message: "",
+                      });
+                    }}
+                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#123038] text-white font-sans text-xs font-semibold hover:bg-[#1c4753] transition-all shadow-xs"
+                  >
+                    <span>Send Another Message</span>
+                  </button>
+                </div>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4">
@@ -440,7 +470,7 @@ export default function ContactPage() {
                       name="phone"
                       value={formData.phone}
                       onChange={handleChange}
-                      placeholder="+91 98765 43210"
+                      placeholder="+91 78772 21729"
                       className="w-full border border-[#E2D7C7] rounded-[5px] px-3.5 py-2.5 text-xs sm:text-sm text-[#1B2B34] placeholder:text-[#A8A49C] focus:border-[#B07129] focus:ring-1 focus:ring-[#B07129] focus:outline-none bg-[#FCFBF8] transition-all"
                     />
                   </div>
@@ -508,10 +538,10 @@ export default function ContactPage() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full bg-[#AF6E26] hover:bg-[#975D1D] active:scale-[0.99] text-white font-sans font-semibold py-3 px-6 rounded-[5px] text-xs sm:text-sm shadow-md hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed"
+                  className="w-full bg-[#25D366] hover:bg-[#20bd5a] active:scale-[0.99] text-white font-sans font-bold py-3 px-6 rounded-lg text-xs sm:text-sm shadow-md hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed"
                 >
-                  <span>{isSubmitting ? "Sending Your Message..." : "Send Message"}</span>
-                  <ArrowRight size={15} />
+                  <MessageCircle size={17} />
+                  <span>{isSubmitting ? "Opening WhatsApp..." : "Send Message on WhatsApp"}</span>
                 </button>
               </form>
             )}
@@ -552,7 +582,7 @@ export default function ContactPage() {
               <div className="grid grid-cols-1 gap-2.5 sm:gap-3">
                 {/* 1. Chat on WhatsApp */}
                 <a
-                  href="https://wa.me/919876543210?text=Hello!%20I%20would%20like%20to%20inquire%20about%20Jaisalmer%20tours%20and%20camps."
+                  href="https://wa.me/917877221729?text=Hello!%20I%20would%20like%20to%20inquire%20about%20Jaisalmer%20tours%20and%20camps."
                   target="_blank"
                   rel="noopener noreferrer"
                   className="bg-white border border-[#E9DFD1] hover:border-[#25D366] rounded-[5px] p-3 flex items-center justify-between gap-2.5 shadow-2xs hover:shadow-sm hover:-translate-y-0.5 transition-all group cursor-pointer"
@@ -575,7 +605,7 @@ export default function ContactPage() {
 
                 {/* 2. Call Us Now */}
                 <a
-                  href="tel:+919876543210"
+                  href="tel:+917877221729"
                   className="bg-white border border-[#E9DFD1] hover:border-[#B07129] rounded-[5px] p-3 flex items-center justify-between gap-2.5 shadow-2xs hover:shadow-sm hover:-translate-y-0.5 transition-all group cursor-pointer"
                 >
                   <div className="flex items-center gap-2.5 min-w-0">
@@ -587,7 +617,7 @@ export default function ContactPage() {
                         Call Us Now
                       </span>
                       <span className="font-sans text-[10px] text-[#7D7973] truncate">
-                        +91 98765 43210
+                        +91 78772 21729
                       </span>
                     </div>
                   </div>
@@ -596,7 +626,7 @@ export default function ContactPage() {
 
                 {/* 3. Email Us */}
                 <a
-                  href="mailto:hello@jaisalmertrips.in"
+                  href="mailto:bk3661758@gmail.com"
                   className="bg-white border border-[#E9DFD1] hover:border-[#B07129] rounded-[5px] p-3 flex items-center justify-between gap-2.5 shadow-2xs hover:shadow-sm hover:-translate-y-0.5 transition-all group cursor-pointer"
                 >
                   <div className="flex items-center gap-2.5 min-w-0">
@@ -608,7 +638,7 @@ export default function ContactPage() {
                         Email Us
                       </span>
                       <span className="font-sans text-[10px] text-[#7D7973] truncate">
-                        hello@jaisalmertrips.in
+                        bk3661758@gmail.com
                       </span>
                     </div>
                   </div>

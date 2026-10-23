@@ -19,7 +19,8 @@ import {
   MapPin, 
   Info, 
   Phone,
-  MessageCircle
+  MessageCircle,
+  Camera
 } from "lucide-react";
 
 import { useCurrency, CURRENCY_LIST, CurrencyCode } from "@/context/CurrencyContext";
@@ -46,10 +47,15 @@ export default function Navbar({ onPlanTripClick, onSearchClick }: NavbarProps) 
   const isPackagesPage =
     pathname === "/packages" ||
     pathname.startsWith("/packages");
+  const isGalleryPage =
+    pathname === "/gallery" ||
+    pathname.startsWith("/gallery");
 
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState(
-    isAboutPage
+    isGalleryPage
+      ? "gallery"
+      : isAboutPage
       ? "about"
       : isContactPage
       ? "contact"
@@ -68,6 +74,7 @@ export default function Navbar({ onPlanTripClick, onSearchClick }: NavbarProps) 
 
   // Determine active navigation item based on current page / section
   const isLinkActive = (linkId: string) => {
+    if (isGalleryPage) return linkId === "gallery";
     if (isAboutPage) return linkId === "about";
     if (isContactPage) return linkId === "contact";
     if (isCampsHotelsPage) return linkId === "camps-hotels";
@@ -78,7 +85,9 @@ export default function Navbar({ onPlanTripClick, onSearchClick }: NavbarProps) 
   };
 
   useEffect(() => {
-    if (isAboutPage) {
+    if (isGalleryPage) {
+      setActiveSection("gallery");
+    } else if (isAboutPage) {
       setActiveSection("about");
     } else if (isContactPage) {
       setActiveSection("contact");
@@ -96,14 +105,14 @@ export default function Navbar({ onPlanTripClick, onSearchClick }: NavbarProps) 
         setActiveSection("home");
       }
     }
-  }, [pathname, isAboutPage, isContactPage, isCampsHotelsPage, isToursPlacesPage, isPackagesPage, isHome]);
+  }, [pathname, isGalleryPage, isAboutPage, isContactPage, isCampsHotelsPage, isToursPlacesPage, isPackagesPage, isHome]);
 
   const navLinks = [
     { id: "home", href: isSubpage ? "/" : "#home", label: "Home", icon: Home },
     { id: "camps-hotels", href: "/camps-hotels", label: "Camps & Hotels", icon: Building2 },
     { id: "tours-places", href: "/tours-places", label: "Tours & Places", icon: Compass },
     { id: "packages", href: "/packages", label: "Packages", icon: Package, badge: "Popular" },
-    { id: "experiences", href: isSubpage ? "/#experiences" : "#experiences", label: "Experiences", icon: Sparkles },
+    { id: "gallery", href: "/gallery", label: "Gallery", icon: Camera },
     { id: "about", href: "/about", label: "About Us", icon: Info },
     { id: "contact", href: "/contact", label: "Contact", icon: Phone },
   ];
@@ -192,7 +201,7 @@ export default function Navbar({ onPlanTripClick, onSearchClick }: NavbarProps) 
   }, []);
 
   const handleWhatsAppClick = () => {
-    window.open("https://wa.me/919876543210?text=Hello!%20I%20would%20like%20to%20plan%20a%20trip%20to%20Jaisalmer.", "_blank");
+    window.open("https://wa.me/917877221729?text=Hello!%20I%20would%20like%20to%20plan%20a%20trip%20to%20Jaisalmer.", "_blank");
   };
 
   return (
@@ -507,7 +516,7 @@ export default function Navbar({ onPlanTripClick, onSearchClick }: NavbarProps) 
                 onClick={handleWhatsAppClick}
               >
                 <MessageCircle size={14} />
-                <span>Chat on WhatsApp (+91 98765 43210)</span>
+                <span>Chat on WhatsApp (+91 78772 21729)</span>
               </button>
 
               {/* Currency Picker in Mobile */}

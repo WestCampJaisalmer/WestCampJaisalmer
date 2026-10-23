@@ -1,9 +1,29 @@
 "use client";
 
 import React, { useRef, useState, useEffect } from "react";
-import Image from "next/image";
-import { Star, ChevronLeft, ChevronRight, Quote } from "lucide-react";
+import { Star, ChevronLeft, ChevronRight, Quote, User } from "lucide-react";
 import { testimonialsData } from "@/data/jaisalmerData";
+
+const avatarGradients = [
+  "from-[#123038] to-[#1E4D5A] text-[#FAF6F0]",
+  "from-[#AF6E26] to-[#C97F2C] text-white",
+  "from-[#1F4E5B] to-[#123038] text-[#F5EAD8]",
+  "from-[#C97F2C] to-[#E39B47] text-[#123038]",
+  "from-[#0D242B] to-[#1C4D58] text-[#FAF6F0]",
+  "from-[#B07129] to-[#8C551C] text-white",
+  "from-[#224A54] to-[#123038] text-[#F3E7D3]",
+  "from-[#C68339] to-[#975D1D] text-white",
+];
+
+const getInitials = (name?: string): string => {
+  if (!name) return "";
+  const parts = name.trim().split(/\s+/).filter(Boolean);
+  if (parts.length === 0) return "";
+  if (parts.length === 1) {
+    return parts[0].slice(0, 2).toUpperCase();
+  }
+  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+};
 
 export default function TestimonialsSection() {
   const carouselRef = useRef<HTMLDivElement>(null);
@@ -112,29 +132,31 @@ export default function TestimonialsSection() {
           ref={carouselRef}
           onScroll={checkScroll}
         >
-          {testimonialsData.map((item) => (
-            <div 
-              key={item.id} 
-              className="snap-start shrink-0 w-[84vw] max-w-[380px] sm:w-[calc(50%-12px)] lg:w-[calc((100%-48px)/3)] flex flex-col p-5 sm:p-6 rounded-[8px] bg-cream/40 border border-border-light shadow-xs sm:shadow-sm transition-all duration-300 hover:shadow-card hover:-translate-y-1 hover:border-gold/40 hover:bg-white"
-            >
-              {/* Header: Avatar & Info */}
-              <div className="flex items-center gap-3 mb-3.5">
-                <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-full overflow-hidden border-2 border-gold/40 shrink-0 relative bg-cream">
-                  <Image
-                    src={item.avatar}
-                    alt={item.name}
-                    width={48}
-                    height={48}
-                    unoptimized
-                    priority
-                    className="object-cover w-full h-full"
-                  />
+          {testimonialsData.map((item, index) => {
+            const initials = getInitials(item.name);
+            return (
+              <div 
+                key={item.id} 
+                className="snap-start shrink-0 w-[84vw] max-w-[380px] sm:w-[calc(50%-12px)] lg:w-[calc((100%-48px)/3)] flex flex-col p-5 sm:p-6 rounded-[8px] bg-cream/40 border border-border-light shadow-xs sm:shadow-sm transition-all duration-300 hover:shadow-card hover:-translate-y-1 hover:border-gold/40 hover:bg-white"
+              >
+                {/* Header: Avatar & Info */}
+                <div className="flex items-center gap-3 mb-3.5">
+                  <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-full overflow-hidden border-2 border-gold/40 shrink-0 relative bg-cream flex items-center justify-center shadow-xs select-none">
+                    {initials ? (
+                      <div className={`w-full h-full flex items-center justify-center bg-gradient-to-tr ${avatarGradients[index % avatarGradients.length]} font-serif font-bold text-xs sm:text-sm tracking-wider`}>
+                        <span>{initials}</span>
+                      </div>
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center bg-[#123038] text-[#C97F2C]">
+                        <User size={20} className="sm:w-[22px] sm:h-[22px]" />
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex flex-col min-w-0">
+                    <h4 className="font-serif font-bold text-sm sm:text-base text-text-main truncate">{item.name}</h4>
+                    <p className="font-sans text-[11px] sm:text-xs text-text-muted truncate">{item.city}</p>
+                  </div>
                 </div>
-                <div className="flex flex-col min-w-0">
-                  <h4 className="font-serif font-bold text-sm sm:text-base text-text-main truncate">{item.name}</h4>
-                  <p className="font-sans text-[11px] sm:text-xs text-text-muted truncate">{item.city}</p>
-                </div>
-              </div>
 
               {/* Star Rating */}
               <div className="flex items-center gap-1 mb-3">
@@ -151,7 +173,8 @@ export default function TestimonialsSection() {
                 </p>
               </div>
             </div>
-          ))}
+          );
+        })}
         </div>
 
         {/* Carousel Dots & Mobile Controls */}
