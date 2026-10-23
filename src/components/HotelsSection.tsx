@@ -3,7 +3,8 @@
 import React, { useState, useRef } from "react";
 import Image from "next/image";
 import { Star, Heart, ChevronLeft, ChevronRight, ArrowRight, MapPin } from "lucide-react";
-import { hotelsData, Hotel } from "@/data/jaisalmerData";
+import type { Hotel } from "@/data/jaisalmerData";
+import { useContent } from "@/context/ContentContext";
 import { useCurrency } from "@/context/CurrencyContext";
 
 interface HotelsSectionProps {
@@ -13,6 +14,7 @@ interface HotelsSectionProps {
 
 export default function HotelsSection({ onSelectHotel, onViewAll }: HotelsSectionProps) {
   const { formatPrice } = useCurrency();
+  const { hotels: hotelsData } = useContent();
   const [favorites, setFavorites] = useState<Record<string, boolean>>({});
   const carouselRef = useRef<HTMLDivElement>(null);
 

@@ -4,19 +4,22 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, BedDouble, Tent, Luggage, Plus } from "lucide-react";
+import { useContent } from "@/context/ContentContext";
+import Lines from "@/components/Lines";
 
 interface ExperienceBannerProps {
   onSelectCategory: (category: string) => void;
 }
 
 export default function ExperienceBanner({ onSelectCategory }: ExperienceBannerProps) {
+  const { home } = useContent();
   const experiences = [
     {
       id: "hotels",
       title: "Hotels",
       desc: "Heritage stays in historic surroundings.",
       icon: BedDouble,
-      image: "/images/hotels/golden-palace.jpg",
+      image: home.experienceHotelsImage,
       link: "/camps-hotels?type=hotels",
     },
     {
@@ -24,7 +27,7 @@ export default function ExperienceBanner({ onSelectCategory }: ExperienceBannerP
       title: "Camps",
       desc: "Luxury desert camps in the heart of desert.",
       icon: Tent,
-      image: "/images/camps/royal-camp.jpg",
+      image: home.experienceCampsImage,
       link: "/camps-hotels?type=camps",
     },
     {
@@ -32,7 +35,7 @@ export default function ExperienceBanner({ onSelectCategory }: ExperienceBannerP
       title: "Tours & Activities",
       desc: "Fort, culture, adventure and local experiences.",
       icon: Luggage,
-      image: "/images/activities/jeep-safari.jpg",
+      image: home.experienceToursImage,
       link: "/#tours",
     },
   ];
@@ -42,7 +45,7 @@ export default function ExperienceBanner({ onSelectCategory }: ExperienceBannerP
       {/* Foliage Banner Background Image with Rich Teal Atmosphere */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         <Image
-          src="/images/banners/Foliage_Banner.png"
+          src={home.experienceBackground}
           alt="Foliage Pattern Background"
           fill
           priority
@@ -57,16 +60,15 @@ export default function ExperienceBanner({ onSelectCategory }: ExperienceBannerP
           {/* Left Column: Heading, Subtitle & Action (Centered on mobile, left on desktop) */}
           <div className="lg:col-span-4 xl:col-span-4 flex flex-col justify-center items-center lg:items-start text-center lg:text-left w-full mx-auto lg:mx-0">
             <span className="block text-center lg:text-left w-full font-sans text-[11px] sm:text-xs font-bold uppercase tracking-[0.22em] text-gold-light mb-2.5 sm:mb-3">
-              CURATED JAISALMER
+              {home.experienceEyebrow}
             </span>
 
             <h2 className="block text-center sm:pb-0 pb-6 lg:text-left w-full font-serif text-2xl sm:text-4xl lg:text-[2.75rem] xl:text-[3.1rem] font-bold text-black !leading-[1.15] sm:mb-4 tracking-tight drop-shadow-sm lg:text-white ">
-              Choose Your<br className="hidden sm:inline" />{" "}
-              Perfect Experience
+              <Lines text={home.experienceHeading} />
             </h2>
 
             <p className="block text-center lg:text-left w-full font-sans text-xs sm:text-base text-white/85 leading-relaxed mb-6 sm:mb-7 max-w-md mx-auto lg:mx-0 lg:mt-0 pt-8">
-              Heritage havelis, luxury desert camps, thrilling safaris and authentic folk cultural experiences crafted for every traveler.
+              {home.experienceDescription}
             </p>
 
             <Link 

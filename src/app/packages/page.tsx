@@ -39,7 +39,8 @@ import BookingModal from "@/components/BookingModal";
 import PlanTripModal from "@/components/PlanTripModal";
 import SearchResultsModal from "@/components/SearchResultsModal";
 
-import { packagesData, TravelPackage } from "@/data/jaisalmerData";
+import type { TravelPackage } from "@/data/jaisalmerData";
+import { useContent } from "@/context/ContentContext";
 import { useCurrency } from "@/context/CurrencyContext";
 
 function PackagesPageContent() {
@@ -47,6 +48,7 @@ function PackagesPageContent() {
   const initialCategory = searchParams?.get("category") || searchParams?.get("type") || "all";
 
   const { formatPrice } = useCurrency();
+  const { packages: packagesData } = useContent();
 
   // Filters state
   const [activeCategory, setActiveCategory] = useState<string>(

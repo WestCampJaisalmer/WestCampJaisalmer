@@ -3,6 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import { ArrowRight, Play } from "lucide-react";
+import { useContent } from "@/context/ContentContext";
 
 interface CtaBannerProps {
   onQuoteClick: () => void;
@@ -10,12 +11,13 @@ interface CtaBannerProps {
 }
 
 export default function CtaBanner({ onQuoteClick, onVideoClick }: CtaBannerProps) {
+  const { home } = useContent();
   return (
     <section className="relative py-12 sm:py-14 lg:py-16 overflow-hidden">
       {/* Background Image with Beneath_Fort.png Desert Night Theme */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         <Image
-          src="/images/banners/Beneath_Fort.png"
+          src={home.ctaBackground}
           alt="Plan Your Jaisalmer Getaway with glowing lanterns and luxury desert camp"
           fill
           priority
@@ -29,11 +31,11 @@ export default function CtaBanner({ onQuoteClick, onVideoClick }: CtaBannerProps
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 relative z-10 text-center">
         <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl lg:text-[2.65rem] xl:text-[2.85rem] font-bold text-white mb-3 sm:mb-4 tracking-tight drop-shadow-lg leading-tight">
-          Plan Your Jaisalmer Getaway Today
+          {home.ctaHeading}
         </h2>
 
         <p className="font-sans text-xs sm:text-sm md:text-base lg:text-lg text-white/95 mb-6 sm:mb-8 max-w-2xl mx-auto drop-shadow font-normal leading-relaxed">
-          Hotels, Camps, Tours and Unique Experiences — All in One Place.
+          {home.ctaText}
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 w-full sm:w-auto">

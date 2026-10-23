@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useRef, useState, useEffect } from "react";
-import { Star, ChevronLeft, ChevronRight, Quote, User } from "lucide-react";
-import { testimonialsData } from "@/data/jaisalmerData";
+import { Star, ChevronLeft, ChevronRight, Quote, User, PenLine } from "lucide-react";
+import ReviewModal from "@/components/ReviewModal";
+import { useContent } from "@/context/ContentContext";
 
 const avatarGradients = [
   "from-[#123038] to-[#1E4D5A] text-[#FAF6F0]",
@@ -26,6 +27,8 @@ const getInitials = (name?: string): string => {
 };
 
 export default function TestimonialsSection() {
+  const { testimonials: testimonialsData } = useContent();
+  const [isReviewOpen, setIsReviewOpen] = useState(false);
   const carouselRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
@@ -95,6 +98,14 @@ export default function TestimonialsSection() {
             <p className="block text-center sm:text-left w-full font-sans text-xs sm:text-base text-text-muted mt-0.5 sm:mt-1 max-w-xl mx-auto sm:mx-0">
               Genuine reviews and unforgettable desert memories shared by our happy guests
             </p>
+            <button
+              type="button"
+              onClick={() => setIsReviewOpen(true)}
+              className="mt-3 sm:mt-4 inline-flex items-center gap-2 rounded-full border border-gold bg-white px-4 py-2 font-sans text-xs sm:text-sm font-bold text-gold-dark hover:bg-gold hover:text-white transition-colors cursor-pointer"
+            >
+              <PenLine size={15} />
+              Share your experience
+            </button>
           </div>
 
           {/* Desktop Carousel Arrow Controls */}
@@ -221,6 +232,8 @@ export default function TestimonialsSection() {
           </button>
         </div>
       </div>
+
+      <ReviewModal isOpen={isReviewOpen} onClose={() => setIsReviewOpen(false)} />
     </section>
   );
 }

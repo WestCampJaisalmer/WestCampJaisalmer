@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { X, Search, Star, MapPin, ArrowRight } from "lucide-react";
-import { hotelsData, campsData, toursData, packagesData } from "@/data/jaisalmerData";
+import { useContent } from "@/context/ContentContext";
 import { useCurrency } from "@/context/CurrencyContext";
 
 interface SearchItem {
@@ -39,6 +39,7 @@ export default function SearchResultsModal({
   onSelectItem,
 }: SearchResultsModalProps) {
   const { formatPrice } = useCurrency();
+  const { hotels: hotelsData, camps: campsData, tours: toursData, packages: packagesData } = useContent();
   const [filterType, setFilterType] = useState<string>(searchParams?.tab || "all");
   const [searchTerm, setSearchTerm] = useState<string>(searchParams?.destination || "");
 

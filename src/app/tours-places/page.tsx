@@ -36,7 +36,8 @@ import BookingModal from "@/components/BookingModal";
 import PlanTripModal from "@/components/PlanTripModal";
 import SearchResultsModal from "@/components/SearchResultsModal";
 
-import { toursData, destinationsData, Tour, Destination } from "@/data/jaisalmerData";
+import type { Tour, Destination } from "@/data/jaisalmerData";
+import { useContent } from "@/context/ContentContext";
 import { useCurrency } from "@/context/CurrencyContext";
 
 export interface ExperienceItem {
@@ -60,6 +61,7 @@ function ToursPlacesContent() {
   const initialType = searchParams?.get("type") || searchParams?.get("tab") || "all";
 
   const { formatPrice } = useCurrency();
+  const { tours: toursData, destinations: destinationsData } = useContent();
 
   // Filters state
   const [activeTab, setActiveTab] = useState<"all" | "tour" | "place">(

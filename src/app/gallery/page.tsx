@@ -25,10 +25,13 @@ import BookingModal from "@/components/BookingModal";
 import PlanTripModal from "@/components/PlanTripModal";
 import SearchResultsModal from "@/components/SearchResultsModal";
 
-import { galleryImages, galleryCategories, GalleryImage } from "@/data/galleryData";
+import type { GalleryImage } from "@/data/galleryData";
+import { useContent } from "@/context/ContentContext";
 import { getWhatsAppUrl, openWhatsApp } from "@/utils/whatsapp";
+import { recordEnquiry } from "@/utils/enquiry";
 
 function GalleryContent() {
+  const { galleryImages, galleryCategories } = useContent();
   const [activeCategory, setActiveCategory] = useState<string>("all");
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
@@ -91,6 +94,15 @@ function GalleryContent() {
 
 _Hello! I saw this photo in your website gallery and would love to experience this during my Jaisalmer trip. Please share package details and pricing._`;
 
+    recordEnquiry({
+      type: "gallery",
+      name: "Gallery visitor",
+      subject: "Photo enquiry",
+      itemType: "gallery",
+      itemId: photo.id,
+      itemName: photo.title,
+      details: { location: photo.location, category: photo.categoryLabel },
+    });
     openWhatsApp(message);
   };
 

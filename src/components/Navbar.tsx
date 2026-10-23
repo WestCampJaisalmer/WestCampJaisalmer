@@ -1,5 +1,6 @@
 "use client";
 
+import { useContent } from "@/context/ContentContext";
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -33,6 +34,7 @@ interface NavbarProps {
 }
 
 export default function Navbar({ onPlanTripClick, onSearchClick }: NavbarProps) {
+  const { home } = useContent();
   const pathname = usePathname();
   const isHome = pathname === "/";
   const isSubpage = !isHome;
@@ -218,7 +220,7 @@ export default function Navbar({ onPlanTripClick, onSearchClick }: NavbarProps) 
           <Link href="/" className="flex items-center gap-2 sm:gap-2.5 md:gap-3 group shrink-0">
             <div className="relative w-14 h-9 sm:w-16 sm:h-10 md:w-20 md:h-12 shrink-0 transition-transform duration-300 group-hover:scale-105">
               <Image
-                src="/images/Jaisalmer_logo.png"
+                src={home.logo}
                 alt="West Camp Jaisalmer Sam"
                 fill
                 sizes="(max-width: 640px) 60px, (max-width: 1024px) 80px, 90px"
@@ -394,7 +396,7 @@ export default function Navbar({ onPlanTripClick, onSearchClick }: NavbarProps) 
               <div className="flex items-center gap-2.5">
                 <div className="relative h-9 w-14 shrink-0">
                   <Image
-                    src="/images/Jaisalmer_logo.png"
+                    src={home.logo}
                     alt="West Camp Jaisalmer Sam"
                     fill
                     sizes="60px"

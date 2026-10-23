@@ -4,8 +4,11 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Phone, Mail, MapPin, Globe, MessageCircle } from "lucide-react";
+import { useContent } from "@/context/ContentContext";
 
 export default function Footer() {
+  const { settings, home } = useContent();
+  const phoneDigits = settings.phone.replace(/[^0-9]/g, "");
   return (
     <footer id="contact" className="relative bg-[#FAF6F0] border-t border-border-light pt-10 sm:pt-16 pb-8 overflow-hidden">
       {/* Background Image: footers.png with Heritage Fort Silhouette */}
@@ -29,7 +32,7 @@ export default function Footer() {
             <Link href="/" className="flex items-center gap-3 mb-4 group">
               <div className="relative w-20 h-12 sm:w-24 sm:h-14 shrink-0 transition-transform duration-300 group-hover:scale-105">
                 <Image
-                  src="/images/Jaisalmer_logo.png"
+                  src={home.logo}
                   alt="West Camp Jaisalmer Sam"
                   fill
                   sizes="100px"
@@ -58,27 +61,27 @@ export default function Footer() {
 
             {/* Social Icons */}
             <div className="flex items-center gap-2.5">
-              <a href="#" className="w-8 h-8 sm:w-9 sm:h-9 rounded-full border border-border-light bg-white/60 flex items-center justify-center text-text-muted hover:text-white hover:bg-gold hover:border-gold transition-all duration-300" aria-label="Instagram">
+              {settings.instagram && <a href={settings.instagram} target="_blank" rel="noopener noreferrer" className="w-8 h-8 sm:w-9 sm:h-9 rounded-full border border-border-light bg-white/60 flex items-center justify-center text-text-muted hover:text-white hover:bg-gold hover:border-gold transition-all duration-300" aria-label="Instagram">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
                   <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
                   <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
                 </svg>
-              </a>
-              <a href="#" className="w-8 h-8 sm:w-9 sm:h-9 rounded-full border border-border-light bg-white/60 flex items-center justify-center text-text-muted hover:text-white hover:bg-gold hover:border-gold transition-all duration-300" aria-label="Facebook">
+              </a>}
+              {settings.facebook && <a href={settings.facebook} target="_blank" rel="noopener noreferrer" className="w-8 h-8 sm:w-9 sm:h-9 rounded-full border border-border-light bg-white/60 flex items-center justify-center text-text-muted hover:text-white hover:bg-gold hover:border-gold transition-all duration-300" aria-label="Facebook">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
                 </svg>
-              </a>
-              <a href="#" className="w-8 h-8 sm:w-9 sm:h-9 rounded-full border border-border-light bg-white/60 flex items-center justify-center text-text-muted hover:text-white hover:bg-gold hover:border-gold transition-all duration-300" aria-label="YouTube">
+              </a>}
+              {settings.youtube && <a href={settings.youtube} target="_blank" rel="noopener noreferrer" className="w-8 h-8 sm:w-9 sm:h-9 rounded-full border border-border-light bg-white/60 flex items-center justify-center text-text-muted hover:text-white hover:bg-gold hover:border-gold transition-all duration-300" aria-label="YouTube">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17" />
                   <polygon points="10 15 15 12 10 9 10 15" />
                 </svg>
-              </a>
-              <a href="#" className="w-8 h-8 sm:w-9 sm:h-9 rounded-full border border-border-light bg-white/60 flex items-center justify-center text-text-muted hover:text-white hover:bg-gold hover:border-gold transition-all duration-300" aria-label="TripAdvisor">
+              </a>}
+              {settings.twitter && <a href={settings.twitter} target="_blank" rel="noopener noreferrer" className="w-8 h-8 sm:w-9 sm:h-9 rounded-full border border-border-light bg-white/60 flex items-center justify-center text-text-muted hover:text-white hover:bg-gold hover:border-gold transition-all duration-300" aria-label="X (Twitter)">
                 <Globe size={15} />
-              </a>
+              </a>}
             </div>
           </div>
 
@@ -118,25 +121,25 @@ export default function Footer() {
               <div className="flex items-center gap-2.5 sm:gap-3">
                 <MessageCircle size={14} className="text-[#25D366] shrink-0 sm:w-[15px] sm:h-[15px]" />
                 <a 
-                  href="https://wa.me/917877221729?text=Hello!%20I%20would%20like%20to%20inquire%20about%20West%20Camp%20Jaisalmer."
+                  href={`https://wa.me/${settings.whatsappNumber}?text=Hello!%20I%20would%20like%20to%20inquire%20about%20West%20Camp%20Jaisalmer.`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-[#25D366] font-medium text-[#123038] transition-colors"
                 >
-                 +91 78772 21729
+                 {settings.phone}
                 </a>
               </div>
               <div className="flex items-center gap-2.5 sm:gap-3">
                 <Phone size={14} className="text-gold shrink-0 sm:w-[15px] sm:h-[15px]" />
-                <a href="tel:+917877221729" className="hover:text-gold transition-colors">+91 78772 21729</a>
+                <a href={`tel:+${phoneDigits}`} className="hover:text-gold transition-colors">{settings.phone}</a>
               </div>
               <div className="flex items-center gap-2.5 sm:gap-3">
                 <Mail size={14} className="text-gold shrink-0 sm:w-[15px] sm:h-[15px]" />
-                <a href="mailto:bk3661758@gmail.com" className="hover:text-gold transition-colors truncate">bk3661758@gmail.com</a>
+                <a href={`mailto:${settings.email}`} className="hover:text-gold transition-colors truncate">{settings.email}</a>
               </div>
               <div className="flex items-start gap-2.5 sm:gap-3">
                 <MapPin size={14} className="text-gold shrink-0 mt-0.5 sm:w-[15px] sm:h-[15px]" />
-                <span>Near Fort Gate, Gopa Chowk, Jaisalmer, Rajasthan, 345001</span>
+                <span>{settings.address}</span>
               </div>
             </div>
           </div>

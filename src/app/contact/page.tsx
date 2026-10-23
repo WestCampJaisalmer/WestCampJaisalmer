@@ -29,6 +29,7 @@ import Footer from "@/components/Footer";
 import PlanTripModal from "@/components/PlanTripModal";
 import SearchResultsModal from "@/components/SearchResultsModal";
 import { openWhatsApp, getWhatsAppUrl } from "@/utils/whatsapp";
+import { recordEnquiry } from "@/utils/enquiry";
 
 export default function ContactPage() {
   // Modal states
@@ -81,6 +82,15 @@ _Please respond via WhatsApp or call._`;
 
     const url = getWhatsAppUrl(message);
     setLastWhatsAppUrl(url);
+    recordEnquiry({
+      type: "contact",
+      name: formData.fullName.trim(),
+      email: formData.email.trim(),
+      phone: formData.phone.trim() || undefined,
+      subject: formData.subject,
+      message: formData.message.trim(),
+      details: { travelDate: formData.travelDate || "Flexible / not decided" },
+    });
     openWhatsApp(message);
 
     setTimeout(() => {

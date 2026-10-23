@@ -1,10 +1,15 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import { ArrowUp, Phone } from "lucide-react";
+import { useContent } from "@/context/ContentContext";
 
 export default function FloatingButtons() {
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const pathname = usePathname();
+  const { settings } = useContent();
+  const telHref = `tel:+${settings.phone.replace(/[^0-9]/g, "")}`;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -28,8 +33,10 @@ export default function FloatingButtons() {
     });
   };
 
+  if (pathname?.startsWith("/admin")) return null;
+
   return (
-    <aside 
+    <aside
       aria-label="Quick contact and navigation"
       className="fixed bottom-3.5 right-3 sm:bottom-5 sm:right-5 z-[999] flex flex-col items-center gap-2 sm:gap-2.5 pointer-events-none select-none"
     >
@@ -49,8 +56,8 @@ export default function FloatingButtons() {
 
       {/* 2. Modern Call Button (Brand Colors: #123038 & #C97F2C Gold, Small & Sleek) */}
       <a
-        href="tel:+917877221729"
-        aria-label="Call +91 78772 21729"
+        href={telHref}
+        aria-label={`Call ${settings.phone}`}
         className="pointer-events-auto group relative w-9.5 h-9.5 sm:w-11 sm:h-11 rounded-full bg-gradient-to-tr from-[#123038] via-[#1A4550] to-[#123038] border-2 border-[#C97F2C] text-[#C97F2C] shadow-md shadow-[#123038]/30 hover:shadow-lg hover:shadow-[#C97F2C]/30 flex items-center justify-center transition-all duration-300 hover:scale-108 active:scale-95 cursor-pointer"
       >
         {/* Subtle pulsing gold ring */}
@@ -63,16 +70,16 @@ export default function FloatingButtons() {
 
         {/* Hover Tooltip for Desktop */}
         <span className="absolute right-full mr-2.5 top-1/2 -translate-y-1/2 px-2.5 py-1 rounded-md bg-[#123038] text-white text-[11px] font-semibold whitespace-nowrap shadow-xl opacity-0 translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-200 pointer-events-none hidden sm:flex items-center gap-1.5 border border-[#C97F2C]/40">
-          <span>Call: +91 78772 21729</span>
+          <span>Call: {settings.phone}</span>
         </span>
       </a>
 
       {/* 3. WhatsApp Floating Button (User Specified SVG, Small & Sleek) */}
       <a
-        href="https://wa.me/917877221729?text=Hello!%20I%20would%20like%20to%20inquire%20about%20West%20Camp%20Jaisalmer."
+        href={`https://wa.me/${settings.whatsappNumber}?text=Hello!%20I%20would%20like%20to%20inquire%20about%20West%20Camp%20Jaisalmer.`}
         target="_blank"
         rel="noopener noreferrer"
-        aria-label="Chat on WhatsApp (+91 78772 21729)"
+        aria-label={`Chat on WhatsApp (${settings.phone})`}
         className="pointer-events-auto group relative w-12 h-12 sm:w-12 sm:h-12 flex items-center justify-center transition-all duration-300 hover:scale-108 active:scale-95 drop-shadow-[0_4px_10px_rgba(39,180,62,0.35)] hover:drop-shadow-[0_6px_16px_rgba(39,180,62,0.55)] cursor-pointer"
       >
         {/* SVG Provided by User */}

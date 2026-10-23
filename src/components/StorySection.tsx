@@ -3,6 +3,8 @@
 import React from "react";
 import Image from "next/image";
 import { ArrowRight, Play, Star } from "lucide-react";
+import { useContent } from "@/context/ContentContext";
+import Lines from "@/components/Lines";
 
 interface StorySectionProps {
   onVideoClick: () => void;
@@ -10,12 +12,13 @@ interface StorySectionProps {
 }
 
 export default function StorySection({ onVideoClick, onExploreClick }: StorySectionProps) {
+  const { home } = useContent();
   return (
     <section id="about" className="relative py-10 sm:py-16 lg:py-20 scroll-mt-20 overflow-hidden">
       {/* Dreamy Desert Fort Sunrise Background Image */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         <Image
-          src="/images/banners/Dreamy_Desert_Fort_at_Sunrise.png"
+          src={home.storyBackground}
           alt="Dreamy Desert Fort at Sunrise"
           fill
           priority
@@ -33,19 +36,17 @@ export default function StorySection({ onVideoClick, onExploreClick }: StorySect
           <div className="lg:col-span-5 xl:col-span-5 flex flex-col justify-center items-center lg:items-start text-center lg:text-left mx-auto lg:mx-0 w-full max-w-xl lg:max-w-none">
             {/* Eyebrow */}
             <span className="font-sans text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] sm:tracking-[0.24em] text-gold mb-2 sm:mb-3.5 block">
-              EXPERIENCE JAISALMER
+              {home.storyEyebrow}
             </span>
             
             {/* Main Section Heading */}
             <h2 className="font-serif text-2xl sm:text-4xl lg:text-[2.75rem] xl:text-[3.1rem] font-bold text-teal !leading-[1.18] sm:!leading-[1.08] tracking-tight mb-3 sm:mb-5">
-              Royal Heritage<br />
-              Desert Adventures<br />
-              Timeless Memories
+              <Lines text={home.storyHeading} />
             </h2>
 
             {/* Subtitle Description */}
             <p className="font-sans text-xs sm:text-base text-text-muted leading-relaxed max-w-lg mb-5 sm:mb-7 mx-auto lg:mx-0">
-              From majestic forts to golden dunes, Jaisalmer offers a perfect blend of history, culture and adventure.
+              {home.storyDescription}
             </p>
 
             {/* Explore Button */}
@@ -53,32 +54,32 @@ export default function StorySection({ onVideoClick, onExploreClick }: StorySect
               className="inline-flex items-center justify-center gap-2.5 px-7 py-3 sm:py-3.5 rounded-[5px] bg-gradient-to-r from-gold-light to-gold text-white font-sans font-semibold text-xs sm:text-sm shadow-gold transition-all duration-300 hover:from-gold hover:to-gold-dark hover:-translate-y-0.5 hover:shadow-lg w-fit mx-auto lg:mx-0 group" 
               onClick={onExploreClick}
             >
-              <span>Explore Jaisalmer</span>
+              <span>{home.storyButton}</span>
               <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
             </button>
 
             {/* Stats Row with vertical dividers */}
             <div className="flex items-center justify-center lg:justify-start gap-4 sm:gap-8 pt-6 sm:pt-8 mt-6 sm:mt-9 border-t border-border-light/90 w-full">
               <div className="flex flex-col items-center lg:items-start">
-                <span className="font-serif text-xl sm:text-3xl font-bold text-teal leading-none">800+</span>
-                <span className="font-sans text-[10px] sm:text-xs text-text-muted mt-1 font-medium">Happy Travelers</span>
+                <span className="font-serif text-xl sm:text-3xl font-bold text-teal leading-none">{home.stat1Value}</span>
+                <span className="font-sans text-[10px] sm:text-xs text-text-muted mt-1 font-medium">{home.stat1Label}</span>
               </div>
 
               <div className="w-[1px] h-8 sm:h-10 bg-border-light shrink-0" />
 
               <div className="flex flex-col items-center lg:items-start">
-                <span className="font-serif text-xl sm:text-3xl font-bold text-teal leading-none">50+</span>
-                <span className="font-sans text-[10px] sm:text-xs text-text-muted mt-1 font-medium">Experiences</span>
+                <span className="font-serif text-xl sm:text-3xl font-bold text-teal leading-none">{home.stat2Value}</span>
+                <span className="font-sans text-[10px] sm:text-xs text-text-muted mt-1 font-medium">{home.stat2Label}</span>
               </div>
 
               <div className="w-[1px] h-8 sm:h-10 bg-border-light shrink-0" />
 
               <div className="flex flex-col items-center lg:items-start">
                 <div className="flex items-center gap-1 leading-none">
-                  <span className="font-serif text-xl sm:text-3xl font-bold text-teal">4.8</span>
+                  <span className="font-serif text-xl sm:text-3xl font-bold text-teal">{home.stat3Value}</span>
                   <Star size={15} className="fill-gold text-gold" />
                 </div>
-                <span className="font-sans text-[10px] sm:text-xs text-text-muted mt-1 font-medium">Average Rating</span>
+                <span className="font-sans text-[10px] sm:text-xs text-text-muted mt-1 font-medium">{home.stat3Label}</span>
               </div>
             </div>
           </div>
@@ -92,7 +93,7 @@ export default function StorySection({ onVideoClick, onExploreClick }: StorySect
               onClick={onVideoClick}
             >
               <Image
-                src="/images/activities/desert-dining.jpg"
+                src={home.storyMainImage}
                 alt="Desert Dining Under the Stars"
                 fill
                 className="object-cover transition-transform duration-700 ease-out group-hover:scale-108"
@@ -104,7 +105,7 @@ export default function StorySection({ onVideoClick, onExploreClick }: StorySect
               {/* Text Label on Bottom Left */}
               <div className="absolute bottom-3 left-3 right-12 sm:bottom-4 sm:left-4 sm:right-16 z-10 text-left">
                 <h4 className="font-serif text-xs sm:text-base md:text-lg font-bold text-white drop-shadow-md leading-tight">
-                  Desert Dining<br />Under the Stars
+                  <Lines text={home.storyMainCaption} />
                 </h4>
               </div>
 
@@ -120,7 +121,7 @@ export default function StorySection({ onVideoClick, onExploreClick }: StorySect
             {/* Card 2: Top Right Card (Luxury Camps) */}
             <div className="absolute right-0 sm:right-2 top-0 sm:top-1 w-[43%] sm:w-[44%] h-[120px] sm:h-[165px] md:h-[190px] lg:h-[220px] rounded-[5px] overflow-hidden shadow-[0_14px_32px_rgba(0,0,0,0.18)] border-[3px] sm:border-4 border-white rotate-[2.5deg] hover:rotate-0 hover:scale-[1.03] hover:z-30 transition-all duration-500 cursor-pointer group z-20">
               <Image
-                src="/images/camps/royal-camp.jpg"
+                src={home.storyTopImage}
                 alt="Luxury Camps in Jaisalmer"
                 fill
                 className="object-cover transition-transform duration-700 ease-out group-hover:scale-108"
@@ -129,7 +130,7 @@ export default function StorySection({ onVideoClick, onExploreClick }: StorySect
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/15 to-transparent opacity-80" />
               <div className="absolute bottom-2.5 left-2.5 sm:bottom-4 sm:left-4 z-10 text-left">
                 <h4 className="font-serif text-[11px] sm:text-sm md:text-base font-bold text-white drop-shadow-md">
-                  Luxury Camps
+                  {home.storyTopCaption}
                 </h4>
               </div>
             </div>
@@ -137,7 +138,7 @@ export default function StorySection({ onVideoClick, onExploreClick }: StorySect
             {/* Card 3: Bottom Right Card (Camel Safari) */}
             <div className="absolute right-0 sm:right-2 bottom-1 sm:bottom-3 w-[43%] sm:w-[44%] h-[120px] sm:h-[165px] md:h-[190px] lg:h-[220px] rounded-[5px] overflow-hidden shadow-[0_14px_32px_rgba(0,0,0,0.18)] border-[3px] sm:border-4 border-white rotate-[3.5deg] hover:rotate-0 hover:scale-[1.03] hover:z-30 transition-all duration-500 cursor-pointer group z-20">
               <Image
-                src="/images/activities/camel-safari.jpg"
+                src={home.storyBottomImage}
                 alt="Camel Safari in Thar Desert"
                 fill
                 className="object-cover transition-transform duration-700 ease-out group-hover:scale-108"
@@ -146,7 +147,7 @@ export default function StorySection({ onVideoClick, onExploreClick }: StorySect
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/15 to-transparent opacity-80" />
               <div className="absolute bottom-2.5 left-2.5 sm:bottom-4 sm:left-4 z-10 text-left">
                 <h4 className="font-serif text-[11px] sm:text-sm md:text-base font-bold text-white drop-shadow-md">
-                  Camel Safari
+                  {home.storyBottomCaption}
                 </h4>
               </div>
             </div>

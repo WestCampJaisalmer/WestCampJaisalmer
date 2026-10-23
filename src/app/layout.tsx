@@ -23,20 +23,28 @@ const autumnScript = localFont({
   display: "swap",
 });
 
-export const metadata: Metadata = {
-  title: "Jaisalmer - Travel & Experiences | A Land of Golden Stories",
-  description: "Heritage stays, luxury desert camps, thrilling tours and unforgettable experiences in the heart of Rajasthan.",
-  keywords: "Jaisalmer tourism, Thar desert camp, Jaisalmer hotels, camel safari, Sam sand dunes, Rajasthan travel",
-};
+// Title / description / keywords are editable in Admin > Site settings.
+export async function generateMetadata(): Promise<Metadata> {
+  const { settings } = await getSiteContent();
+  return {
+    title: settings.seoTitle,
+    description: settings.seoDescription,
+    keywords: settings.seoKeywords,
+  };
+}
 
 import { CurrencyProvider } from "@/context/CurrencyContext";
+import { ContentProvider } from "@/context/ContentContext";
 import FloatingButtons from "@/components/FloatingButtons";
+import AnnouncementBar from "@/components/AnnouncementBar";
+import { getSiteContent } from "@/lib/content";
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const content = await getSiteContent();
   return (
     <html lang="en" className={`${playfair.variable} ${inter.variable} ${autumnScript.variable}`}>
       <head>
@@ -48,10 +56,13 @@ export default function RootLayout({
         />
       </head>
       <body className="font-sans antialiased text-text-main bg-cream">
-        <CurrencyProvider>
-          {children}
-          <FloatingButtons />
-        </CurrencyProvider>
+        <ContentProvider content={content}>
+          <CurrencyProvider>
+            {children}
+            <FloatingButtons />
+            <AnnouncementBar />
+          </CurrencyProvider>
+        </ContentProvider>
       </body>
     </html>
   );

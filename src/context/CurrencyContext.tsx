@@ -19,6 +19,14 @@ export const CURRENCIES: Record<CurrencyCode, CurrencyConfig> = {
   AED: { code: "AED", symbol: "AED ", label: "AED (د.إ)", rate: 1 / 23.4 },
 };
 
+/** Applies admin-configured rates. Input is INR per 1 unit of each foreign currency. */
+export function applyCurrencyRates(rates: Partial<Record<Exclude<CurrencyCode, "INR">, number>>) {
+  (Object.keys(rates) as Exclude<CurrencyCode, "INR">[]).forEach((code) => {
+    const inrPerUnit = rates[code];
+    if (CURRENCIES[code] && inrPerUnit && inrPerUnit > 0) CURRENCIES[code].rate = 1 / inrPerUnit;
+  });
+}
+
 export const CURRENCY_LIST: CurrencyConfig[] = [
   CURRENCIES.INR,
   CURRENCIES.USD,

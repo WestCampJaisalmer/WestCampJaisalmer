@@ -35,7 +35,8 @@ import BookingModal from "@/components/BookingModal";
 import PlanTripModal from "@/components/PlanTripModal";
 import SearchResultsModal from "@/components/SearchResultsModal";
 
-import { hotelsData, campsData, Hotel, Camp } from "@/data/jaisalmerData";
+import type { Hotel, Camp } from "@/data/jaisalmerData";
+import { useContent } from "@/context/ContentContext";
 import { useCurrency } from "@/context/CurrencyContext";
 
 export interface StayItem {
@@ -57,6 +58,7 @@ function CampsHotelsContent() {
   const initialType = searchParams?.get("type") || searchParams?.get("tab") || "all";
 
   const { formatPrice } = useCurrency();
+  const { hotels: hotelsData, camps: campsData } = useContent();
 
   // Filter & Search states
   const [activeTab, setActiveTab] = useState<"all" | "hotel" | "camp">(

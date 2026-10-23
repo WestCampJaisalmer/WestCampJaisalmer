@@ -5,6 +5,7 @@ import Image from "next/image";
 import { X, Star, MapPin, Check, ShieldCheck, MessageCircle } from "lucide-react";
 import { useCurrency } from "@/context/CurrencyContext";
 import { openWhatsApp, getWhatsAppUrl } from "@/utils/whatsapp";
+import { recordEnquiry } from "@/utils/enquiry";
 
 interface BookingModalProps {
   item: any;
@@ -68,6 +69,21 @@ _Please confirm availability and share payment/check-in instructions._`;
     const msg = buildWhatsAppMessage();
     const url = getWhatsAppUrl(msg);
     setLastWhatsAppUrl(url);
+    recordEnquiry({
+      type: "booking",
+      name: guestName.trim() || "Website visitor",
+      phone: guestPhone.trim() || undefined,
+      itemType: type ?? undefined,
+      itemId: item.id ? String(item.id) : undefined,
+      itemName: item.name || item.title,
+      details: {
+        location: item.location || item.distance,
+        [type === "tour" ? "slot" : type === "package" ? "duration" : "nights"]:
+          type === "tour" ? selectedTourTime : type === "package" ? item.duration : nights,
+        guests,
+        estimatedTotalInr: totalPrice,
+      },
+    });
     openWhatsApp(msg);
     setConfirmed(true);
   };

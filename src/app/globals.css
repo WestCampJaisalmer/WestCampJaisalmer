@@ -56,3 +56,48 @@ body {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+/* ───────────── Admin dashboard ───────────── */
+@layer components {
+  .adm-card {
+    @apply rounded-lg border border-border-light bg-white shadow-subtle;
+  }
+  .adm-label {
+    @apply mb-1.5 block text-[13px] font-semibold text-deep-teal;
+  }
+  .adm-help {
+    @apply mt-1 text-xs text-text-muted;
+  }
+  .adm-error {
+    @apply mt-1 text-xs font-medium text-red-600;
+  }
+  .adm-input {
+    @apply w-full rounded-sm border border-[#DDD2BF] bg-white px-3 py-2.5 text-sm text-text-main placeholder:text-text-light
+      transition focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/25 disabled:bg-cream disabled:text-text-muted;
+  }
+  .adm-btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-sm px-4 py-2.5 text-sm font-semibold transition
+      disabled:cursor-not-allowed disabled:opacity-60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/50 cursor-pointer;
+  }
+  .adm-btn-primary {
+    @apply adm-btn bg-gold text-white shadow-gold hover:bg-gold-dark;
+  }
+  .adm-btn-dark {
+    @apply adm-btn bg-deep-teal text-white hover:bg-teal-light;
+  }
+  .adm-btn-ghost {
+    @apply adm-btn border border-[#DDD2BF] bg-white text-deep-teal hover:bg-cream-alt;
+  }
+  .adm-btn-danger {
+    @apply adm-btn border border-red-200 bg-white text-red-600 hover:bg-red-50;
+  }
+  .adm-btn-sm {
+    @apply px-3 py-1.5 text-xs;
+  }
+  .adm-th {
+    @apply whitespace-nowrap px-4 py-3 text-left text-[11px] font-bold uppercase tracking-wider text-text-muted;
+  }
+  .adm-td {
+    @apply px-4 py-3 align-middle text-sm text-text-main;
+  }
+}

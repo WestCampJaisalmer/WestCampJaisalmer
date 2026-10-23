@@ -12,6 +12,8 @@ import {
   Smile,
   Briefcase,
 } from "lucide-react";
+import { useContent } from "@/context/ContentContext";
+import Lines from "@/components/Lines";
 
 interface TharMagicSectionProps {
   onPlanTripClick: () => void;
@@ -20,6 +22,7 @@ interface TharMagicSectionProps {
 export default function TharMagicSection({
   onPlanTripClick,
 }: TharMagicSectionProps) {
+  const { home } = useContent();
   const highlights = [
     { label: "Custom Packages", icon: <Package size={15} /> },
     { label: "Private Tours", icon: <Compass size={15} /> },
@@ -37,7 +40,7 @@ export default function TharMagicSection({
       {/* Sunrise Banner Background Image */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         <Image
-          src="/images/banners/Sunrise_Banner.png"
+          src={home.tharBackground}
           alt="Sunrise Banner Background"
           fill
           priority
@@ -54,7 +57,7 @@ export default function TharMagicSection({
           <div className="lg:col-span-5 relative w-full max-w-md mx-auto lg:max-w-none">
             <div className="relative w-full h-[240px] sm:h-[320px] lg:h-[380px] rounded-2xl lg:rounded-l-none lg:rounded-r-[50px] overflow-hidden shadow-xl sm:shadow-2xl border-2 sm:border-4 border-white group left-0 lg:-left-[80px]">
               <Image
-                src="/images/activities/thar-magic.jpg"
+                src={home.tharImage}
                 alt="Woman traveler enjoying sunrise over Thar desert sand dunes in Jaisalmer"
                 fill
                 priority
@@ -68,20 +71,18 @@ export default function TharMagicSection({
           {/* Center: Content Block (Centered on mobile, left on desktop) */}
           <div className="lg:col-span-4 xl:col-span-4 flex flex-col justify-center items-center lg:items-start text-center lg:text-left w-full mx-auto lg:mx-0 max-w-xl lg:max-w-none">
             <span className="block text-center lg:text-left w-full font-sans text-[11px] sm:text-xs font-bold uppercase tracking-[0.22em] text-gold mb-2 sm:mb-3">
-              DISCOVER THE REAL BEAUTY
+              {home.tharEyebrow}
             </span>
 
             <h2 className="block text-center lg:text-left w-full font-serif text-2xl sm:text-3xl md:text-4xl lg:text-[2.6rem] xl:text-[2.9rem] font-bold text-teal leading-[1.16] tracking-tight mb-2.5 sm:mb-4">
-              Feel the Magic<br />
+              {home.tharHeading}<br />
               <span className="italic font-normal text-gold-dark inline-block mt-1 sm:mt-2">
-                of the Thar Desert
+                {home.tharHeadingAccent}
               </span>
             </h2>
 
             <p className="block text-center lg:text-left w-full font-sans text-xs sm:text-sm md:text-base text-text-muted leading-relaxed mb-5 sm:mb-6 max-w-xl mx-auto lg:mx-0">
-              Golden sands, starry skies and unforgettable moments await you in
-              Jaisalmer. Let us create a memorable journey for your perfect
-              desert getaway.
+              {home.tharDescription}
             </p>
 
             <div className="flex flex-col sm:flex-row items-center gap-2.5 sm:gap-3 w-fit mx-auto lg:mx-0 mb-6 lg:mb-0">

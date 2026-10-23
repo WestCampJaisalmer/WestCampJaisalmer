@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { X, Sparkles, CheckCircle, MessageCircle } from "lucide-react";
 import { openWhatsApp, getWhatsAppUrl } from "@/utils/whatsapp";
+import { recordEnquiry } from "@/utils/enquiry";
 
 interface PlanTripModalProps {
   isOpen: boolean;
@@ -43,6 +44,20 @@ _Please share custom tour plan options and pricing._`;
 
     const url = getWhatsAppUrl(message);
     setLastWhatsAppUrl(url);
+    recordEnquiry({
+      type: "plan_trip",
+      name: formData.name.trim() || "Website visitor",
+      phone: formData.phone.trim() || undefined,
+      email: formData.email.trim() || undefined,
+      subject: "Custom trip plan",
+      message: formData.notes.trim() || undefined,
+      details: {
+        expectedArrival: formData.date,
+        tripDuration: formData.days,
+        guests: formData.guests,
+        experiences: formData.preferences,
+      },
+    });
     openWhatsApp(message);
     setSubmitted(true);
   };

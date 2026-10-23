@@ -3,7 +3,8 @@
 import React, { useState, useRef } from "react";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight, ArrowRight, Heart, Star, MapPin, Clock } from "lucide-react";
-import { toursData, Tour } from "@/data/jaisalmerData";
+import type { Tour } from "@/data/jaisalmerData";
+import { useContent } from "@/context/ContentContext";
 import { useCurrency } from "@/context/CurrencyContext";
 
 interface ToursSectionProps {
@@ -13,6 +14,7 @@ interface ToursSectionProps {
 
 export default function ToursSection({ onSelectTour, onViewAll }: ToursSectionProps) {
   const { formatPrice } = useCurrency();
+  const { tours: toursData } = useContent();
   const [favorites, setFavorites] = useState<Record<string, boolean>>({});
   const carouselRef = useRef<HTMLDivElement>(null);
 

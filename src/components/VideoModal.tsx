@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { X, Play, Pause, Volume2, VolumeX, Sparkles, Clock } from "lucide-react";
 import { useCurrency } from "@/context/CurrencyContext";
+import { useContent } from "@/context/ContentContext";
 
 interface VideoModalProps {
   isOpen: boolean;
@@ -13,6 +14,7 @@ interface VideoModalProps {
 
 export default function VideoModal({ isOpen, onClose, onBookDining }: VideoModalProps) {
   const { formatPrice } = useCurrency();
+  const { home } = useContent();
   const [isPlaying, setIsPlaying] = useState(true);
   const [isMuted, setIsMuted] = useState(false);
 
@@ -35,7 +37,7 @@ export default function VideoModal({ isOpen, onClose, onBookDining }: VideoModal
         {/* Video Canvas Simulation */}
         <div className="relative h-72 sm:h-88 w-full bg-black overflow-hidden">
           <Image
-            src="/images/activities/desert-dining.jpg"
+            src={home.videoImage}
             alt="Desert Dining Experience"
             fill
             sizes="(max-width: 768px) 100vw, 720px"

@@ -3,7 +3,8 @@
 import React, { useRef } from "react";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
-import { destinationsData, Destination } from "@/data/jaisalmerData";
+import type { Destination } from "@/data/jaisalmerData";
+import { useContent } from "@/context/ContentContext";
 
 interface DestinationsSectionProps {
   onSelectDestination: (dest: Destination) => void;
@@ -11,6 +12,7 @@ interface DestinationsSectionProps {
 }
 
 export default function DestinationsSection({ onSelectDestination, onViewAll }: DestinationsSectionProps) {
+  const { destinations: destinationsData } = useContent();
   const carouselRef = useRef<HTMLDivElement>(null);
 
   const handleScroll = (direction: "left" | "right") => {

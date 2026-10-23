@@ -10,7 +10,8 @@ import {
   ArrowRight,
   MapPin,
 } from "lucide-react";
-import { campsData, Camp } from "@/data/jaisalmerData";
+import type { Camp } from "@/data/jaisalmerData";
+import { useContent } from "@/context/ContentContext";
 import { useCurrency } from "@/context/CurrencyContext";
 
 interface CampsSectionProps {
@@ -23,6 +24,7 @@ export default function CampsSection({
   onViewAll,
 }: CampsSectionProps) {
   const { formatPrice } = useCurrency();
+  const { camps: campsData } = useContent();
   const [favorites, setFavorites] = useState<Record<string, boolean>>({});
   const carouselRef = useRef<HTMLDivElement>(null);
 
