@@ -35,7 +35,7 @@ export default function VideoModal({ isOpen, onClose, onBookDining }: VideoModal
         {/* Video Canvas Simulation */}
         <div className="relative h-72 sm:h-88 w-full bg-black overflow-hidden">
           <Image
-            src="/images/desert-dining.jpg"
+            src="/images/activities/desert-dining.jpg"
             alt="Desert Dining Experience"
             fill
             sizes="(max-width: 768px) 100vw, 720px"

@@ -11,7 +11,7 @@ export default function Footer() {
       {/* Background Image: footers.png with Heritage Fort Silhouette */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         <Image
-          src="/images/footers.png"
+          src="/images/banners/footers.png"
           alt="Jaisalmer Heritage Fort Silhouette"
           fill
           priority
@@ -26,25 +26,29 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-10 pb-8 sm:pb-12 border-b border-[#000000]">
           {/* Brand Column */}
           <div className="lg:col-span-4 flex flex-col">
-            <Link href="/" className="flex items-center gap-2.5 mb-4 group">
-              <div className="w-9 h-7 flex items-center justify-center shrink-0">
-                <svg width="34" height="26" viewBox="0 0 40 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M20 2L24 8H28L30 14V28H10V14L12 8H16L20 2Z" fill="#c97f2c" />
-                  <path d="M4 14L8 18V28H2V18L4 14Z" fill="#df9745" />
-                  <path d="M36 14L38 18V28H32V18L36 14Z" fill="#df9745" />
-                  <rect x="18" y="18" width="4" height="10" rx="2" fill="#123038" />
-                  <circle cx="20" cy="5" r="1.5" fill="#fef08a" />
-                  <rect x="13" y="12" width="2" height="4" rx="1" fill="#123038" />
-                  <rect x="25" y="12" width="2" height="4" rx="1" fill="#123038" />
-                </svg>
+            <Link href="/" className="flex items-center gap-3 mb-4 group">
+              <div className="relative w-20 h-12 sm:w-24 sm:h-14 shrink-0 transition-transform duration-300 group-hover:scale-105">
+                <Image
+                  src="/images/Jaisalmer_logo.png"
+                  alt="West Camp Jaisalmer Sam"
+                  fill
+                  sizes="100px"
+                  className="object-contain object-left drop-shadow-xs"
+                />
               </div>
-              <div className="flex flex-col">
-                <span className="font-serif text-xl sm:text-2xl font-bold text-text-main group-hover:text-gold transition-colors">
-                  Jaisalmer
-                </span>
-                <span className="font-sans text-[9px] font-bold tracking-[0.18em] text-gold uppercase">
-                  TRAVEL & EXPERIENCES
-                </span>
+              <div className="flex flex-col justify-center">
+                <div className="flex items-center gap-1.5 leading-none">
+                  <span className="font-serif text-xl sm:text-2xl font-bold text-[#123038] group-hover:text-[#C97F2C] transition-colors whitespace-nowrap">
+                    West Camp
+                  </span>
+                </div>
+                <div className="flex items-center justify-center gap-1.5 mt-1 w-full">
+                  <span className="h-[1px] flex-1 bg-[#C97F2C]/70" />
+                  <span className="font-sans text-[8.5px] sm:text-[9.5px] font-bold tracking-[0.24em] text-[#C97F2C] uppercase whitespace-nowrap">
+                    Jaisalmer
+                  </span>
+                  <span className="h-[1px] flex-1 bg-[#C97F2C]/70" />
+                </div>
               </div>
             </Link>
 
@@ -84,11 +88,12 @@ export default function Footer() {
             <div className="flex flex-col">
               <h4 className="font-serif font-bold text-sm sm:text-base text-text-main mb-3 sm:mb-4">Quick Links</h4>
               <ul className="flex flex-col gap-2 sm:gap-2.5 font-sans text-xs sm:text-sm text-text-muted">
-                <li><Link href="#home" className="hover:text-gold-dark transition-colors">Home</Link></li>
-                <li><Link href="#hotels" className="hover:text-gold-dark transition-colors">Hotels</Link></li>
-                <li><Link href="#camps" className="hover:text-gold-dark transition-colors">Camps</Link></li>
-                <li><Link href="#tours" className="hover:text-gold-dark transition-colors">Tours</Link></li>
-                <li><Link href="#packages" className="hover:text-gold-dark transition-colors">Packages</Link></li>
+                <li><Link href="/" className="hover:text-gold-dark transition-colors">Home</Link></li>
+                <li><Link href="/camps-hotels" className="hover:text-gold-dark transition-colors font-medium text-gold-dark">Camps &amp; Hotels</Link></li>
+                <li><Link href="/tours-places" className="hover:text-gold-dark transition-colors font-medium text-gold-dark">Tours &amp; Places</Link></li>
+                <li><Link href="/packages" className="hover:text-gold-dark transition-colors font-medium text-gold-dark">Holiday Packages</Link></li>
+                <li><Link href="/about" className="hover:text-gold-dark transition-colors">About Us</Link></li>
+                <li><Link href="/contact" className="hover:text-gold-dark transition-colors">Contact</Link></li>
               </ul>
             </div>
 
@@ -96,11 +101,11 @@ export default function Footer() {
             <div className="flex flex-col">
               <h4 className="font-serif font-bold text-sm sm:text-base text-text-main mb-3 sm:mb-4">Explore</h4>
               <ul className="flex flex-col gap-2 sm:gap-2.5 font-sans text-xs sm:text-sm text-text-muted">
-                <li><Link href="#destinations" className="hover:text-gold-dark transition-colors">Jaisalmer Fort</Link></li>
-                <li><Link href="#destinations" className="hover:text-gold-dark transition-colors">Sam Sand Dunes</Link></li>
-                <li><Link href="#destinations" className="hover:text-gold-dark transition-colors">Kuldhara Village</Link></li>
-                <li><Link href="#destinations" className="hover:text-gold-dark transition-colors">Gadisar Lake</Link></li>
-                <li><Link href="#destinations" className="hover:text-gold-dark transition-colors">Bada Bagh</Link></li>
+                <li><Link href="/tours-places?type=places" className="hover:text-gold-dark transition-colors">Jaisalmer Fort</Link></li>
+                <li><Link href="/tours-places?type=places" className="hover:text-gold-dark transition-colors">Sam Sand Dunes</Link></li>
+                <li><Link href="/tours-places?type=places" className="hover:text-gold-dark transition-colors">Kuldhara Village</Link></li>
+                <li><Link href="/tours-places?type=places" className="hover:text-gold-dark transition-colors">Gadisar Lake</Link></li>
+                <li><Link href="/tours-places?type=tours" className="hover:text-gold-dark transition-colors">Desert Safari Tours</Link></li>
               </ul>
             </div>
           </div>

@@ -2,6 +2,8 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { 
   Search, 
   ChevronDown, 
@@ -30,23 +32,80 @@ interface NavbarProps {
 }
 
 export default function Navbar({ onPlanTripClick, onSearchClick }: NavbarProps) {
+  const pathname = usePathname();
+  const isHome = pathname === "/";
+  const isSubpage = !isHome;
+  const isAboutPage = pathname === "/about" || pathname.startsWith("/about");
+  const isContactPage = pathname === "/contact" || pathname.startsWith("/contact");
+  const isCampsHotelsPage = 
+    pathname === "/camps-hotels" || 
+    pathname.startsWith("/camps-hotels");
+  const isToursPlacesPage =
+    pathname === "/tours-places" ||
+    pathname.startsWith("/tours-places");
+  const isPackagesPage =
+    pathname === "/packages" ||
+    pathname.startsWith("/packages");
+
   const [isScrolled, setIsScrolled] = useState(false);
-  const [activeSection, setActiveSection] = useState("home");
+  const [activeSection, setActiveSection] = useState(
+    isAboutPage
+      ? "about"
+      : isContactPage
+      ? "contact"
+      : isCampsHotelsPage
+      ? "camps-hotels"
+      : isToursPlacesPage
+      ? "tours-places"
+      : isPackagesPage
+      ? "packages"
+      : "home"
+  );
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { currency, setCurrency } = useCurrency();
   const [currencyDropdownOpen, setCurrencyDropdownOpen] = useState(false);
   const currencyDropdownRef = useRef<HTMLDivElement>(null);
 
+  // Determine active navigation item based on current page / section
+  const isLinkActive = (linkId: string) => {
+    if (isAboutPage) return linkId === "about";
+    if (isContactPage) return linkId === "contact";
+    if (isCampsHotelsPage) return linkId === "camps-hotels";
+    if (isToursPlacesPage) return linkId === "tours-places";
+    if (isPackagesPage) return linkId === "packages";
+    if (isHome) return activeSection === linkId;
+    return false;
+  };
+
+  useEffect(() => {
+    if (isAboutPage) {
+      setActiveSection("about");
+    } else if (isContactPage) {
+      setActiveSection("contact");
+    } else if (isCampsHotelsPage) {
+      setActiveSection("camps-hotels");
+    } else if (isToursPlacesPage) {
+      setActiveSection("tours-places");
+    } else if (isPackagesPage) {
+      setActiveSection("packages");
+    } else if (isHome) {
+      const hash = window.location.hash.replace("#", "");
+      if (hash && ["tours", "experiences", "packages", "destinations"].includes(hash)) {
+        setActiveSection(hash);
+      } else {
+        setActiveSection("home");
+      }
+    }
+  }, [pathname, isAboutPage, isContactPage, isCampsHotelsPage, isToursPlacesPage, isPackagesPage, isHome]);
+
   const navLinks = [
-    { id: "home", href: "#home", label: "Home", icon: Home },
-    { id: "hotels", href: "#hotels", label: "Hotels", icon: Building2 },
-    { id: "camps", href: "#camps", label: "Camps", icon: Tent, badge: "Popular" },
-    { id: "tours", href: "#tours", label: "Tours", icon: Compass },
-    { id: "experiences", href: "#experiences", label: "Experiences", icon: Sparkles },
-    { id: "packages", href: "#packages", label: "Packages", icon: Package },
-    { id: "destinations", href: "#destinations", label: "Places", icon: MapPin },
-    { id: "about", href: "#about", label: "About", icon: Info },
-    { id: "contact", href: "#contact", label: "Contact", icon: Phone },
+    { id: "home", href: isSubpage ? "/" : "#home", label: "Home", icon: Home },
+    { id: "camps-hotels", href: "/camps-hotels", label: "Camps & Hotels", icon: Building2 },
+    { id: "tours-places", href: "/tours-places", label: "Tours & Places", icon: Compass },
+    { id: "packages", href: "/packages", label: "Packages", icon: Package, badge: "Popular" },
+    { id: "experiences", href: isSubpage ? "/#experiences" : "#experiences", label: "Experiences", icon: Sparkles },
+    { id: "about", href: "/about", label: "About Us", icon: Info },
+    { id: "contact", href: "/contact", label: "Contact", icon: Phone },
   ];
 
   const handleCurrencySelect = (code: string) => {
@@ -74,22 +133,21 @@ export default function Navbar({ onPlanTripClick, onSearchClick }: NavbarProps) 
 
   // Scroll spy & navbar background transition
   useEffect(() => {
-    const sectionIds = ["home", "hotels", "camps", "tours", "experiences", "packages", "destinations", "about", "contact"];
-
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
 
-      // If at bottom of page, activate last item (contact)
-      if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 70) {
-        setActiveSection("contact");
+      // On subpages (/about, /contact, /camps-hotels), the page itself must strictly remain active
+      if (!isHome) {
         return;
       }
 
-      // If at top of page, activate first item (home)
+      // If at top of homepage, activate first item (home)
       if (window.scrollY < 120) {
         setActiveSection("home");
         return;
       }
+
+      const sectionIds = ["home", "tours", "experiences", "packages", "destinations"];
 
       for (const id of sectionIds) {
         const element = document.getElementById(id);
@@ -107,7 +165,7 @@ export default function Navbar({ onPlanTripClick, onSearchClick }: NavbarProps) 
     handleScroll();
 
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [isHome]);
 
   // Lock body scroll when mobile menu is open
   useEffect(() => {
@@ -148,42 +206,50 @@ export default function Navbar({ onPlanTripClick, onSearchClick }: NavbarProps) 
       >
         <div className="max-w-[1380px] mx-auto px-3 sm:px-6 flex items-center justify-between gap-2 sm:gap-4">
           {/* Brand Logo */}
-          <Link href="/" className="flex items-center gap-2 sm:gap-2.5 group shrink-0">
-            <div className="w-8 h-6 sm:w-9 sm:h-7 flex items-center justify-center shrink-0">
-              {/* Traditional Jaisalmer Fort Palace Silhouette SVG */}
-              <svg width="30" height="23" className="sm:w-[34px] sm:h-[26px]" viewBox="0 0 40 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M20 2L24 8H28L30 14V28H10V14L12 8H16L20 2Z" fill="#c97f2c" />
-                <path d="M4 14L8 18V28H2V18L4 14Z" fill="#df9745" />
-                <path d="M36 14L38 18V28H32V18L36 14Z" fill="#df9745" />
-                <rect x="18" y="18" width="4" height="10" rx="2" fill="#123038" />
-                <circle cx="20" cy="5" r="1.5" fill="#fef08a" />
-                <rect x="13" y="12" width="2" height="4" rx="1" fill="#123038" />
-                <rect x="25" y="12" width="2" height="4" rx="1" fill="#123038" />
-              </svg>
+          <Link href="/" className="flex items-center gap-2 sm:gap-2.5 md:gap-3 group shrink-0">
+            <div className="relative w-14 h-9 sm:w-16 sm:h-10 md:w-20 md:h-12 shrink-0 transition-transform duration-300 group-hover:scale-105">
+              <Image
+                src="/images/Jaisalmer_logo.png"
+                alt="West Camp Jaisalmer Sam"
+                fill
+                sizes="(max-width: 640px) 60px, (max-width: 1024px) 80px, 90px"
+                className="object-contain object-left drop-shadow-xs"
+                priority
+              />
             </div>
-            <div className="flex flex-col">
-              <span className="font-serif text-lg sm:text-2xl font-bold text-text-main leading-tight tracking-tight group-hover:text-gold transition-colors">
-                Jaisalmer
-              </span>
-              <span className="font-sans text-[7.5px] sm:text-[9px] font-bold tracking-[0.14em] sm:tracking-[0.18em] text-gold uppercase whitespace-nowrap">
-                TRAVEL & EXPERIENCES
-              </span>
+            <div className="flex flex-col justify-center">
+              <div className="flex items-center gap-1 sm:gap-1.5 leading-none">
+                <span className="font-serif text-[15px] sm:text-lg md:text-xl font-bold text-[#123038] tracking-tight group-hover:text-[#C97F2C] transition-colors whitespace-nowrap">
+                  West Camp
+                </span>
+              </div>
+              <div className="flex items-center justify-center gap-1 sm:gap-1.5 mt-0.5 sm:mt-1 w-full">
+                <span className="h-[1px] flex-1 bg-[#C97F2C]/70" />
+                <span className="font-sans text-[7.5px] sm:text-[8.5px] md:text-[9.5px] font-bold tracking-[0.2em] sm:tracking-[0.24em] text-[#C97F2C] uppercase whitespace-nowrap">
+                  Jaisalmer
+                </span>
+                <span className="h-[1px] flex-1 bg-[#C97F2C]/70" />
+              </div>
             </div>
           </Link>
 
           {/* Desktop Navigation Links */}
           <nav className="hidden lg:flex items-center gap-1 xl:gap-1.5 p-1">
             {navLinks.map((link) => {
-              const isActive = activeSection === link.id;
+              const isActive = isLinkActive(link.id);
               return (
                 <Link
                   key={link.id}
                   href={link.href}
-                  onClick={() => setActiveSection(link.id)}
-                  className={`relative px-3.5 py-1.5 rounded-[5px] text-xs xl:text-sm font-semibold transition-all duration-200 flex items-center gap-1.5 ${
+                  onClick={() => {
+                    if (isHome) {
+                      setActiveSection(link.id);
+                    }
+                  }}
+                  className={`relative px-3 py-1.5 text-xs xl:text-sm font-semibold transition-all duration-200 flex items-center gap-1.5 ${
                     isActive
-                      ? "text-gold bg-[#FAF4E8] font-bold border border-[#E4D1B8] shadow-xs"
-                      : "text-[#4B4945] hover:text-gold hover:bg-[#FAF6F0]"
+                      ? "text-gold font-bold after:absolute after:bottom-0 after:left-2 after:right-2 after:h-[2px] after:bg-gold"
+                      : "text-[#4B4945] hover:text-gold hover:bg-[#FAF6F0]/60 rounded-[5px]"
                   }`}
                 >
                   <span>{link.label}</span>
@@ -279,12 +345,16 @@ export default function Navbar({ onPlanTripClick, onSearchClick }: NavbarProps) 
         {/* Mobile Horizontal Quick Navigation Bar - Visible directly on mobile devices */}
         <div className="lg:hidden flex items-center gap-1.5 px-3 py-1.5 overflow-x-auto no-scrollbar border-t border-border-light/60 bg-white/95 mt-1">
           {navLinks.map((link) => {
-            const isActive = activeSection === link.id;
+            const isActive = isLinkActive(link.id);
             return (
               <Link
                 key={link.id}
                 href={link.href}
-                onClick={() => setActiveSection(link.id)}
+                onClick={() => {
+                  if (isHome) {
+                    setActiveSection(link.id);
+                  }
+                }}
                 className={`shrink-0 px-2.5 py-1 rounded-[5px] text-[11px] font-semibold whitespace-nowrap transition-all ${
                   isActive
                     ? "bg-[#FAF4E8] text-gold font-bold border border-[#E4D1B8] shadow-xs"
@@ -312,23 +382,29 @@ export default function Navbar({ onPlanTripClick, onSearchClick }: NavbarProps) 
           <div className="fixed top-0 right-0 bottom-0 w-[85%] max-w-[340px] h-full bg-white shadow-2xl flex flex-col justify-between overflow-y-auto border-l border-border-light z-10">
             {/* Drawer Header */}
             <div className="p-4 sm:p-5 border-b border-border-light flex items-center justify-between bg-cream/40">
-              <div className="flex items-center gap-2">
-                <svg width="26" height="20" viewBox="0 0 40 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M20 2L24 8H28L30 14V28H10V14L12 8H16L20 2Z" fill="#c97f2c" />
-                  <path d="M4 14L8 18V28H2V18L4 14Z" fill="#df9745" />
-                  <path d="M36 14L38 18V28H32V18L36 14Z" fill="#df9745" />
-                  <rect x="18" y="18" width="4" height="10" rx="2" fill="#123038" />
-                  <circle cx="20" cy="5" r="1.5" fill="#fef08a" />
-                  <rect x="13" y="12" width="2" height="4" rx="1" fill="#123038" />
-                  <rect x="25" y="12" width="2" height="4" rx="1" fill="#123038" />
-                </svg>
-                <div className="flex flex-col">
-                  <span className="font-serif text-lg font-bold text-text-main leading-tight">
-                    Jaisalmer
-                  </span>
-                  <span className="font-sans text-[7.5px] font-bold tracking-[0.16em] text-gold uppercase">
-                    TRAVEL & EXPERIENCES
-                  </span>
+              <div className="flex items-center gap-2.5">
+                <div className="relative h-9 w-14 shrink-0">
+                  <Image
+                    src="/images/Jaisalmer_logo.png"
+                    alt="West Camp Jaisalmer Sam"
+                    fill
+                    sizes="60px"
+                    className="object-contain object-left"
+                  />
+                </div>
+                <div className="flex flex-col justify-center">
+                  <div className="flex items-center gap-1 leading-none">
+                    <span className="font-serif text-base font-bold text-[#123038]">
+                      West Camp
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-center gap-1 mt-0.5 w-full">
+                    <span className="h-[1px] flex-1 bg-[#C97F2C]/70" />
+                    <span className="font-sans text-[7.5px] font-bold tracking-[0.2em] text-[#C97F2C] uppercase whitespace-nowrap">
+                      Jaisalmer
+                    </span>
+                    <span className="h-[1px] flex-1 bg-[#C97F2C]/70" />
+                  </div>
                 </div>
               </div>
 
@@ -365,14 +441,16 @@ export default function Navbar({ onPlanTripClick, onSearchClick }: NavbarProps) 
 
               {navLinks.map((link) => {
                 const IconComponent = link.icon;
-                const isActive = activeSection === link.id;
+                const isActive = isLinkActive(link.id);
 
                 return (
                   <Link 
                     key={link.id}
                     href={link.href} 
                     onClick={() => {
-                      setActiveSection(link.id);
+                      if (isHome) {
+                        setActiveSection(link.id);
+                      }
                       setMobileMenuOpen(false);
                     }}
                     className={`flex items-center justify-between px-3 py-2 sm:py-2.5 rounded-[6px] text-xs sm:text-sm font-semibold transition-all ${

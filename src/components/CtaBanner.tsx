@@ -15,7 +15,7 @@ export default function CtaBanner({ onQuoteClick, onVideoClick }: CtaBannerProps
       {/* Background Image with Beneath_Fort.png Desert Night Theme */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         <Image
-          src="/images/Beneath_Fort.png"
+          src="/images/banners/Beneath_Fort.png"
           alt="Plan Your Jaisalmer Getaway with glowing lanterns and luxury desert camp"
           fill
           priority

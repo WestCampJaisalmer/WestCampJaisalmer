@@ -2,6 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
 import {
   ArrowRight,
   Package,
@@ -36,7 +37,7 @@ export default function TharMagicSection({
       {/* Sunrise Banner Background Image */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         <Image
-          src="/images/Sunrise_Banner.png"
+          src="/images/banners/Sunrise_Banner.png"
           alt="Sunrise Banner Background"
           fill
           priority
@@ -53,7 +54,7 @@ export default function TharMagicSection({
           <div className="lg:col-span-5 relative w-full max-w-md mx-auto lg:max-w-none">
             <div className="relative w-full h-[240px] sm:h-[320px] lg:h-[380px] rounded-2xl lg:rounded-l-none lg:rounded-r-[50px] overflow-hidden shadow-xl sm:shadow-2xl border-2 sm:border-4 border-white group left-0 lg:-left-[80px]">
               <Image
-                src="/images/thar-magic.jpg"
+                src="/images/activities/thar-magic.jpg"
                 alt="Woman traveler enjoying sunrise over Thar desert sand dunes in Jaisalmer"
                 fill
                 priority
@@ -83,16 +84,26 @@ export default function TharMagicSection({
               desert getaway.
             </p>
 
-            <button
-              className="inline-flex items-center justify-center gap-2.5 px-7 py-3 sm:py-3.5 rounded-[5px] bg-gradient-to-r from-gold-light to-gold text-white font-sans font-semibold text-xs sm:text-sm shadow-gold transition-all duration-300 hover:from-gold hover:to-gold-dark hover:-translate-y-0.5 hover:shadow-lg w-fit mx-auto lg:mx-0 mb-6 lg:mb-0 group"
-              onClick={onPlanTripClick}
-            >
-              <span>Plan Your Trip</span>
-              <ArrowRight
-                size={16}
-                className="transition-transform duration-300 group-hover:translate-x-1"
-              />
-            </button>
+            <div className="flex flex-col sm:flex-row items-center gap-2.5 sm:gap-3 w-fit mx-auto lg:mx-0 mb-6 lg:mb-0">
+              <button
+                className="inline-flex items-center justify-center gap-2.5 px-6 py-3 sm:py-3.5 rounded-[5px] bg-gradient-to-r from-gold-light to-gold text-white font-sans font-semibold text-xs sm:text-sm shadow-gold transition-all duration-300 hover:from-gold hover:to-gold-dark hover:-translate-y-0.5 hover:shadow-lg w-full sm:w-auto group cursor-pointer"
+                onClick={onPlanTripClick}
+              >
+                <span>Plan Your Trip</span>
+                <ArrowRight
+                  size={16}
+                  className="transition-transform duration-300 group-hover:translate-x-1"
+                />
+              </button>
+
+              <Link
+                href="/packages"
+                className="inline-flex items-center justify-center gap-2 px-5 py-3 sm:py-3.5 rounded-[5px] bg-white/95 hover:bg-white text-text-main border border-border-light hover:border-gold hover:text-gold text-xs sm:text-sm font-semibold transition-all shadow-xs w-full sm:w-auto"
+              >
+                <Package size={15} className="text-gold" />
+                <span>Explore Packages</span>
+              </Link>
+            </div>
           </div>
 
           {/* Right: Features (2-column grid on mobile/tablet, 1-col column on desktop) */}

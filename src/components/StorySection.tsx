@@ -15,7 +15,7 @@ export default function StorySection({ onVideoClick, onExploreClick }: StorySect
       {/* Dreamy Desert Fort Sunrise Background Image */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         <Image
-          src="/images/Dreamy_Desert_Fort_at_Sunrise.png"
+          src="/images/banners/Dreamy_Desert_Fort_at_Sunrise.png"
           alt="Dreamy Desert Fort at Sunrise"
           fill
           priority
@@ -92,7 +92,7 @@ export default function StorySection({ onVideoClick, onExploreClick }: StorySect
               onClick={onVideoClick}
             >
               <Image
-                src="/images/desert-dining.jpg"
+                src="/images/activities/desert-dining.jpg"
                 alt="Desert Dining Under the Stars"
                 fill
                 className="object-cover transition-transform duration-700 ease-out group-hover:scale-108"
@@ -110,7 +110,7 @@ export default function StorySection({ onVideoClick, onExploreClick }: StorySect
 
               {/* Circular Play Button on Bottom Right */}
               <div 
-                className="absolute bottom-3 right-3 sm:bottom-4 sm:right-4 w-9 h-9 sm:w-12 sm:h-12 rounded-full bg-white/95 backdrop-blur-md flex items-center justify-center text-teal shadow-xl transition-all duration-300 group-hover:scale-115 group-hover:bg-gold group-hover:text-white z-10" 
+                className="absolute bottom-3 right-3 sm:bottom-4 sm:right-14 w-9 h-9 sm:w-12 sm:h-12 rounded-full bg-white/95 backdrop-blur-md flex items-center justify-center text-teal shadow-xl transition-all duration-300 group-hover:scale-115 group-hover:bg-gold group-hover:text-white z-10" 
                 title="Play Video Preview"
               >
                 <Play size={16} className="fill-current ml-0.5 sm:w-5 sm:h-5" />
@@ -120,7 +120,7 @@ export default function StorySection({ onVideoClick, onExploreClick }: StorySect
             {/* Card 2: Top Right Card (Luxury Camps) */}
             <div className="absolute right-0 sm:right-2 top-0 sm:top-1 w-[43%] sm:w-[44%] h-[120px] sm:h-[165px] md:h-[190px] lg:h-[220px] rounded-[5px] overflow-hidden shadow-[0_14px_32px_rgba(0,0,0,0.18)] border-[3px] sm:border-4 border-white rotate-[2.5deg] hover:rotate-0 hover:scale-[1.03] hover:z-30 transition-all duration-500 cursor-pointer group z-20">
               <Image
-                src="/images/royal-camp.jpg"
+                src="/images/camps/royal-camp.jpg"
                 alt="Luxury Camps in Jaisalmer"
                 fill
                 className="object-cover transition-transform duration-700 ease-out group-hover:scale-108"
@@ -137,7 +137,7 @@ export default function StorySection({ onVideoClick, onExploreClick }: StorySect
             {/* Card 3: Bottom Right Card (Camel Safari) */}
             <div className="absolute right-0 sm:right-2 bottom-1 sm:bottom-3 w-[43%] sm:w-[44%] h-[120px] sm:h-[165px] md:h-[190px] lg:h-[220px] rounded-[5px] overflow-hidden shadow-[0_14px_32px_rgba(0,0,0,0.18)] border-[3px] sm:border-4 border-white rotate-[3.5deg] hover:rotate-0 hover:scale-[1.03] hover:z-30 transition-all duration-500 cursor-pointer group z-20">
               <Image
-                src="/images/camel-safari.jpg"
+                src="/images/activities/camel-safari.jpg"
                 alt="Camel Safari in Thar Desert"
                 fill
                 className="object-cover transition-transform duration-700 ease-out group-hover:scale-108"

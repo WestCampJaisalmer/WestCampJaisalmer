@@ -93,10 +93,10 @@ export default function DestinationsSection({ onSelectDestination, onViewAll }: 
 
               {/* Info */}
               <div className="relative z-10 flex flex-col">
-                <h3 className="font-serif font-bold text-base sm:text-lg text-white leading-tight drop-shadow-sm group-hover:text-gold-light transition-colors">
+                <h3 className="font-serif  text-lg sm:text-xl font-bold text-white leading-tight drop-shadow-sm group-hover:text-gold-light transition-colors">
                   {dest.name}
                 </h3>
-                <span className="font-sans text-[11px] sm:text-xs text-gold-light font-medium mt-1">
+                <span className="font-sans text-xs sm:text-sm text-gold-light font-medium mt-1">
                   {dest.subtitle}
                 </span>
               </div>

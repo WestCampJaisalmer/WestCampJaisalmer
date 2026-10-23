@@ -65,7 +65,7 @@ export default function PlanTripModal({ isOpen, onClose }: PlanTripModalProps) {
             </div>
             <h3 className="font-serif text-xl sm:text-2xl font-bold text-text-main mb-2">Khamma Ghani, {formData.name || "Traveler"}!</h3>
             <p className="font-sans text-xs sm:text-sm text-text-muted max-w-md mx-auto leading-relaxed mb-5 sm:mb-6">
-              Your custom Jaisalmer itinerary request has been received. Our local travel concierge will contact you on <strong className="text-text-main">{formData.phone || "WhatsApp"}</strong> within 30 minutes with personalized options.
+              Your custom Jaisalmer tour plan request has been received. Our local travel concierge will contact you on <strong className="text-text-main">{formData.phone || "WhatsApp"}</strong> within 30 minutes with personalized options.
             </p>
             <button 
               className="inline-flex items-center justify-center px-6 sm:px-8 py-2.5 sm:py-3 rounded-[5px] bg-gradient-to-r from-gold-light to-gold text-white font-sans font-semibold text-xs sm:text-sm shadow-gold hover:from-gold hover:to-gold-dark transition-all active:scale-95" 
@@ -226,7 +226,7 @@ export default function PlanTripModal({ isOpen, onClose }: PlanTripModalProps) {
                 className="mt-1 sm:mt-2 w-full inline-flex items-center justify-center gap-2 px-6 py-3 sm:py-3.5 rounded-[5px] bg-gradient-to-r from-gold-light to-gold text-white font-sans font-semibold text-xs sm:text-sm shadow-gold hover:from-gold hover:to-gold-dark hover:shadow-lg transition-all active:scale-[0.99]"
               >
                 <Send size={15} />
-                <span>Get Free Itinerary & Custom Quote</span>
+                <span>Get Free Tour Plan &amp; Custom Quote</span>
               </button>
             </form>
           </div>

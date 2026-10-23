@@ -230,7 +230,7 @@ export default function SearchCard({ onSearch }: SearchCardProps) {
                       <option value="3 Days / 2 Nights">3 Days / 2 Nights</option>
                       <option value="2 Days / 1 Night">2 Days / 1 Night</option>
                       <option value="4 Days / 3 Nights">4 Days / 3 Nights</option>
-                      <option value="Custom Itinerary">Custom Itinerary</option>
+                      <option value="Custom Tour Plan">Custom Tour Plan</option>
                     </select>
                   </>
                 ) : (

@@ -64,7 +64,7 @@ export default function TestimonialsSection() {
     <section className="py-10 sm:py-16 lg:py-20 bg-white border-t border-border-light overflow-hidden">
       <div className="max-w-[1350px] mx-auto px-4 sm:px-6">
         {/* Section Header (Centered on mobile, left on desktop) */}
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 sm:gap-4 mb-6 sm:mb-8 text-center sm:text-left items-center sm:items-start">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 mb-6 sm:mb-8 text-center sm:text-left items-center sm:items-start">
           <div className="flex flex-col items-center sm:items-start w-full sm:w-auto">
             <span className="block text-center sm:text-left w-full font-sans text-[11px] sm:text-xs font-bold uppercase tracking-[0.22em] text-gold mb-1.5 sm:mb-2">
               TRAVELER STORIES

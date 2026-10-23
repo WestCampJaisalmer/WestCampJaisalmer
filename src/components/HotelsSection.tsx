@@ -38,7 +38,7 @@ export default function HotelsSection({ onSelectHotel, onViewAll }: HotelsSectio
     <section id="hotels" className="py-12 sm:py-16 lg:py-20 bg-white border-t border-border-light scroll-mt-20">
       <div className="max-w-[1350px] mx-auto px-3 sm:px-6">
         {/* Section Header (Centered on mobile, left on desktop) */}
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 sm:gap-4 mb-6 sm:mb-8 text-center sm:text-left items-center sm:items-start">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 mb-6 sm:mb-8 text-center sm:text-left items-center sm:items-start">
           <div className="flex flex-col items-center sm:items-start w-full sm:w-auto">
             <span className="block text-center sm:text-left w-full font-sans text-[11px] sm:text-xs font-bold uppercase tracking-[0.22em] text-gold mb-1.5 sm:mb-2">
               ROYAL HERITAGE STAYS
@@ -81,7 +81,7 @@ export default function HotelsSection({ onSelectHotel, onViewAll }: HotelsSectio
 
         {/* Hotels Grid / Carousel */}
         <div 
-          className="flex overflow-x-auto no-scrollbar gap-3.5 sm:gap-6 pb-4 snap-x snap-mandatory lg:grid lg:grid-cols-4 pt-1 px-1 sm:px-0" 
+          className="flex overflow-x-auto no-scrollbar gap-3.5 sm:gap-6 pb-4 snap-x snap-mandatory lg:grid lg:grid-cols-4 pt-4 px-1 sm:px-0" 
           ref={carouselRef}
         >
           {hotelsData.map((hotel) => {
@@ -118,7 +118,7 @@ export default function HotelsSection({ onSelectHotel, onViewAll }: HotelsSectio
 
                 {/* Card Body */}
                 <div className="p-3.5 sm:p-5 flex flex-col flex-1">
-                  <h3 className="font-serif font-bold text-base sm:text-lg text-text-main group-hover:text-gold transition-colors line-clamp-1 mb-1 sm:mb-1.5">
+                  <h3 className="font-serif text-lg sm:text-xl font-bold text-[#123038] group-hover:text-[#C97F2C] transition-colors leading-snug mb-2">
                     {hotel.name}
                   </h3>
 
@@ -130,7 +130,7 @@ export default function HotelsSection({ onSelectHotel, onViewAll }: HotelsSectio
                   </div>
 
                   {/* Location */}
-                  <p className="flex items-center gap-1 font-sans text-[11px] sm:text-xs text-text-muted mb-3 sm:mb-4">
+                  <p className="flex items-center gap-1 font-sans text-xs sm:text-sm text-[#5C5A55] leading-relaxed mb-3 sm:mb-4">
                     <MapPin size={12} className="text-gold shrink-0" />
                     <span className="truncate">{hotel.location}</span>
                   </p>
@@ -138,9 +138,9 @@ export default function HotelsSection({ onSelectHotel, onViewAll }: HotelsSectio
                   {/* Price Row */}
                   <div className="mt-auto pt-2.5 sm:pt-3.5 border-t border-dashed border-border-light flex items-baseline justify-between">
                     <div>
-                      <span className="font-sans text-[11px] text-text-muted">From </span>
-                      <span className="font-sans font-bold text-sm sm:text-base text-gold">{formatPrice(hotel.price)}</span>
-                      <span className="font-sans text-[11px] text-text-muted"> / night</span>
+                      {/* <span className="text-xs text-[#7D776E] font-semibold mb-0.5">From </span> */}
+                      <span className="font-serif text-2xl sm:text-[1.65rem] font-bold text-[#123038]">{formatPrice(hotel.price)}</span>
+                      <span className="font-sans text-xs sm:text-sm text-muted"> / night</span>
                     </div>
 
                     <span className="inline-flex items-center gap-1 font-sans font-semibold text-xs text-gold group-hover:text-gold-dark group-hover:translate-x-1 transition-all">

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import ValueProps from "@/components/ValueProps";
@@ -20,11 +21,11 @@ import PlanTripModal from "@/components/PlanTripModal";
 import BookingModal from "@/components/BookingModal";
 import VideoModal from "@/components/VideoModal";
 import SearchResultsModal from "@/components/SearchResultsModal";
-import ScrollToTop from "@/components/ScrollToTop";
 
 import { Hotel, Camp, Tour, Destination } from "@/data/jaisalmerData";
 
 export default function Home() {
+  const router = useRouter();
   // Modal states
   const [isPlanTripOpen, setIsPlanTripOpen] = useState(false);
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
@@ -113,10 +114,7 @@ export default function Home() {
       <div className="reveal-on-scroll">
         <HotelsSection
           onSelectHotel={(hotel: Hotel) => handleOpenBooking(hotel, "hotel")}
-          onViewAll={() => {
-            setSearchParams({ tab: "hotels" });
-            setIsSearchModalOpen(true);
-          }}
+          onViewAll={() => router.push("/camps-hotels?type=hotels")}
         />
       </div>
 
@@ -124,10 +122,7 @@ export default function Home() {
       <div className="reveal-on-scroll">
         <CampsSection
           onSelectCamp={(camp: Camp) => handleOpenBooking(camp, "camp")}
-          onViewAll={() => {
-            setSearchParams({ tab: "camps" });
-            setIsSearchModalOpen(true);
-          }}
+          onViewAll={() => router.push("/camps-hotels?type=camps")}
         />
       </div>
 
@@ -135,10 +130,7 @@ export default function Home() {
       <div className="reveal-on-scroll">
         <ToursSection
           onSelectTour={(tour: Tour) => handleOpenBooking(tour, "tour")}
-          onViewAll={() => {
-            setSearchParams({ tab: "tours" });
-            setIsSearchModalOpen(true);
-          }}
+          onViewAll={() => router.push("/tours-places?type=tours")}
         />
       </div>
 
@@ -151,7 +143,7 @@ export default function Home() {
       <div id="destinations" className="reveal-on-scroll">
         <DestinationsSection
           onSelectDestination={(dest: Destination) => handleOpenBooking(dest, "destination")}
-          onViewAll={() => setIsPlanTripOpen(true)}
+          onViewAll={() => router.push("/tours-places?type=places")}
         />
       </div>
 
@@ -197,8 +189,6 @@ export default function Home() {
         onSelectItem={(item, type) => handleOpenBooking(item, type)}
       />
 
-      {/* Floating Scroll to Top button (only icon, responsive) */}
-      <ScrollToTop />
     </main>
   );
 }

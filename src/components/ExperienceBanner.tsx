@@ -2,6 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { ArrowRight, BedDouble, Tent, Luggage, Plus } from "lucide-react";
 
 interface ExperienceBannerProps {
@@ -15,24 +16,24 @@ export default function ExperienceBanner({ onSelectCategory }: ExperienceBannerP
       title: "Hotels",
       desc: "Heritage stays in historic surroundings.",
       icon: BedDouble,
-      image: "/images/golden-palace.jpg",
-      link: "#hotels",
+      image: "/images/hotels/golden-palace.jpg",
+      link: "/camps-hotels?type=hotels",
     },
     {
       id: "camps",
       title: "Camps",
       desc: "Luxury desert camps in the heart of desert.",
       icon: Tent,
-      image: "/images/royal-camp.jpg",
-      link: "#camps",
+      image: "/images/camps/royal-camp.jpg",
+      link: "/camps-hotels?type=camps",
     },
     {
       id: "tours",
       title: "Tours & Activities",
       desc: "Fort, culture, adventure and local experiences.",
       icon: Luggage,
-      image: "/images/jeep-safari.jpg",
-      link: "#tours",
+      image: "/images/activities/jeep-safari.jpg",
+      link: "/#tours",
     },
   ];
 
@@ -41,7 +42,7 @@ export default function ExperienceBanner({ onSelectCategory }: ExperienceBannerP
       {/* Foliage Banner Background Image with Rich Teal Atmosphere */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         <Image
-          src="/images/Foliage_Banner.png"
+          src="/images/banners/Foliage_Banner.png"
           alt="Foliage Pattern Background"
           fill
           priority
@@ -59,7 +60,7 @@ export default function ExperienceBanner({ onSelectCategory }: ExperienceBannerP
               CURATED JAISALMER
             </span>
 
-            <h2 className="block text-center lg:text-left w-full font-serif text-2xl sm:text-4xl lg:text-[2.75rem] xl:text-[3.1rem] font-bold text-black !leading-[1.15] mb-3 sm:mb-4 tracking-tight drop-shadow-sm lg:text-white ">
+            <h2 className="block text-center sm:pb-0 pb-6 lg:text-left w-full font-serif text-2xl sm:text-4xl lg:text-[2.75rem] xl:text-[3.1rem] font-bold text-black !leading-[1.15] sm:mb-4 tracking-tight drop-shadow-sm lg:text-white ">
               Choose Your<br className="hidden sm:inline" />{" "}
               Perfect Experience
             </h2>
@@ -68,13 +69,13 @@ export default function ExperienceBanner({ onSelectCategory }: ExperienceBannerP
               Heritage havelis, luxury desert camps, thrilling safaris and authentic folk cultural experiences crafted for every traveler.
             </p>
 
-            <a 
-              href="#hotels" 
+            <Link 
+              href="/camps-hotels" 
               className="inline-flex items-center justify-center gap-2.5 px-7 py-3 rounded-[5px] bg-[#C97F2C] hover:bg-[#AD671D] text-white font-sans font-semibold text-xs sm:text-sm shadow-gold transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg w-fit mx-auto lg:mx-0 group"
             >
-              <span>Explore All</span>
+              <span>Explore Camps &amp; Hotels</span>
               <ArrowRight size={15} className="transition-transform duration-300 group-hover:translate-x-1" />
-            </a>
+            </Link>
           </div>
 
           {/* Right Column: 3 Experience Cards */}
@@ -83,12 +84,14 @@ export default function ExperienceBanner({ onSelectCategory }: ExperienceBannerP
               const IconComponent = item.icon;
 
               return (
-                <a 
+                <Link 
                   href={item.link} 
                   key={item.id} 
                   className="group relative rounded-[5px] border border-white/25 bg-[#072027]/75 backdrop-blur-md overflow-hidden sm:overflow-visible shadow-xl transition-all duration-300 hover:-translate-y-1.5 hover:border-gold/60 flex flex-col cursor-pointer"
-                  onClick={() => {
-                    onSelectCategory(item.id);
+                  onClick={(e) => {
+                    if (item.link.startsWith("#") || item.link.startsWith("/#")) {
+                      onSelectCategory(item.id);
+                    }
                   }}
                 >
                   {/* Top Photo Frame */}
@@ -125,7 +128,7 @@ export default function ExperienceBanner({ onSelectCategory }: ExperienceBannerP
                       <Plus size={14} className="stroke-[3]" />
                     </div>
                   </div>
-                </a>
+                </Link>
               );
             })}
           </div>
