@@ -11,7 +11,7 @@ export default async function NewResourcePage({ params }: { params: Promise<{ re
 
   return (
     <>
-      <PageHeader back={{ href: `/admin/content/${def.key}`, label: def.plural }} title={`Add ${def.singular.toLowerCase()}`} />
+      <PageHeader back={{ href: `/admin/content/${def.key}`, label: def.plural }} title={def.key === "gallery-categories" ? "Add" : `Add ${def.singular.toLowerCase()}`} />
       <ResourceForm def={def} id={null} item={null} />
     </>
   );

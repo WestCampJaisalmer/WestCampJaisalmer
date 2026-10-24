@@ -12,9 +12,10 @@ interface Props {
   required?: boolean;
   help?: string;
   error?: string;
+  compact?: boolean;
 }
 
-export default function ImageField({ name, label, initial = "", required, help, error }: Props) {
+export default function ImageField({ name, label, initial = "", required, help, error, compact = false }: Props) {
   const [value, setValue] = useState(initial);
   const [busy, setBusy] = useState(false);
   const [problem, setProblem] = useState("");
@@ -36,6 +37,86 @@ export default function ImageField({ name, label, initial = "", required, help, 
     if (errors.length) setProblem(errors[0]);
     setBusy(false);
     if (input.current) input.current.value = "";
+  }
+
+  if (compact) {
+    return (
+      <div>
+        <label className="adm-label text-xs">
+          {label}
+          {required && <span className="text-red-500"> *</span>}
+        </label>
+        <input type="hidden" name={name} value={value} />
+
+        <div
+          onDragOver={(e) => { e.preventDefault(); setDrag(true); }}
+          onDragLeave={() => setDrag(false)}
+          onDrop={(e) => { e.preventDefault(); setDrag(false); handle(e.dataTransfer.files); }}
+          className={`flex items-center gap-3 rounded-md border p-2 transition ${
+            drag ? "border-gold bg-gold/10" : "border-[#DDD2BF] bg-cream/40"
+          }`}
+        >
+          <div className="flex h-14 w-20 shrink-0 items-center justify-center overflow-hidden rounded bg-cream-alt border border-border-light/60">
+            {value && !broken ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={value} alt="Preview" className="h-full w-full object-cover" onError={() => setBroken(true)} />
+            ) : (
+              <div className="flex flex-col items-center gap-0.5 text-text-light">
+                <ImageOff size={16} />
+                <span className="text-[9px]">No image</span>
+              </div>
+            )}
+          </div>
+
+          <div className="min-w-0 flex-1 space-y-1.5">
+            <div className="flex flex-wrap items-center gap-1.5">
+              <button
+                type="button"
+                className="adm-btn-dark adm-btn-sm !py-1 !px-2.5 text-xs inline-flex items-center gap-1"
+                disabled={busy}
+                onClick={() => input.current?.click()}
+              >
+                {busy ? <Loader2 size={12} className="animate-spin" /> : <UploadCloud size={12} />}
+                <span>{busy ? "…" : "Upload"}</span>
+              </button>
+              <button
+                type="button"
+                className="adm-btn-ghost adm-btn-sm !py-1 !px-2.5 text-xs inline-flex items-center gap-1"
+                disabled={busy}
+                onClick={() => setPick(true)}
+              >
+                <FolderOpen size={12} />
+                <span>Media</span>
+              </button>
+              {value && (
+                <button
+                  type="button"
+                  className="adm-btn-danger adm-btn-sm !py-1 !px-2 text-xs"
+                  onClick={() => { setValue(""); setBroken(false); }}
+                  title="Remove image"
+                >
+                  <Trash2 size={12} />
+                </button>
+              )}
+            </div>
+            <input
+              type="text"
+              inputMode="url"
+              value={value}
+              onChange={(e) => { setValue(e.target.value); setBroken(false); }}
+              placeholder="Paste image path or URL…"
+              className="adm-input !py-1 !px-2 text-xs font-mono"
+              aria-label={`${label} URL`}
+            />
+          </div>
+        </div>
+
+        <input ref={input} type="file" accept="image/jpeg,image/png,image/webp,image/gif,image/avif" className="hidden" onChange={(e) => handle(e.target.files)} />
+        {help && <p className="adm-help text-[11px] mt-1">{help}</p>}
+        {(problem || error) && <p role="alert" className="adm-error">{problem || error}</p>}
+        {pick && <MediaPicker onClose={() => setPick(false)} onPick={(url) => { setValue(url); setBroken(false); setPick(false); }} />}
+      </div>
+    );
   }
 
   return (
@@ -68,15 +149,15 @@ export default function ImageField({ name, label, initial = "", required, help, 
 
         <div className="min-w-0 flex-1 space-y-2.5">
           <div className="flex flex-wrap gap-2">
-            <button type="button" className="adm-btn-dark adm-btn-sm" disabled={busy} onClick={() => input.current?.click()}>
+            <button type="button" className="adm-btn-dark adm-btn-sm flex-1 sm:flex-none justify-center" disabled={busy} onClick={() => input.current?.click()}>
               {busy ? <Loader2 size={14} className="animate-spin" /> : <UploadCloud size={14} />}
               {busy ? "Uploading…" : "Upload"}
             </button>
-            <button type="button" className="adm-btn-ghost adm-btn-sm" disabled={busy} onClick={() => setPick(true)}>
+            <button type="button" className="adm-btn-ghost adm-btn-sm flex-1 sm:flex-none justify-center" disabled={busy} onClick={() => setPick(true)}>
               <FolderOpen size={14} /> Media library
             </button>
             {value && (
-              <button type="button" className="adm-btn-danger adm-btn-sm" onClick={() => { setValue(""); setBroken(false); }}>
+              <button type="button" className="adm-btn-danger adm-btn-sm flex-1 sm:flex-none justify-center" onClick={() => { setValue(""); setBroken(false); }}>
                 <Trash2 size={14} /> Remove
               </button>
             )}

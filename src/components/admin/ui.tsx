@@ -15,17 +15,17 @@ export function PageHeader({
   back?: { href: string; label: string };
 }) {
   return (
-    <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+    <div className="mb-5 sm:mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
       <div className="min-w-0">
         {back && (
           <Link href={back.href} className="mb-2 inline-flex items-center gap-1 text-xs font-semibold text-text-muted hover:text-gold">
             <ChevronLeft size={14} /> {back.label}
           </Link>
         )}
-        <h1 className="font-serif text-2xl font-bold text-deep-teal sm:text-3xl lining-nums">{title}</h1>
-        {description && <p className="mt-1 text-sm text-text-muted">{description}</p>}
+        <h1 className="font-serif text-xl font-bold text-deep-teal sm:text-2xl md:text-3xl lining-nums">{title}</h1>
+        {description && <p className="mt-1 text-xs sm:text-sm text-text-muted">{description}</p>}
       </div>
-      {actions && <div className="flex flex-wrap items-center gap-2">{actions}</div>}
+      {actions && <div className="flex w-full flex-wrap items-center gap-2 sm:w-auto">{actions}</div>}
     </div>
   );
 }
@@ -100,7 +100,7 @@ export function Pagination({
   const from = (page - 1) * pageSize + 1;
   const to = Math.min(page * pageSize, total);
   return (
-    <div className="flex items-center justify-between border-t border-border-light px-4 py-3 text-sm text-text-muted">
+    <div className="flex flex-col items-center justify-between gap-3 border-t border-border-light px-4 py-3 text-xs sm:flex-row sm:text-sm text-text-muted">
       <span>
         {from}–{to} of {total}
       </span>

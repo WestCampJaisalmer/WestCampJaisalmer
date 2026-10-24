@@ -44,16 +44,16 @@ export default async function EnquiryDetailPage({ params }: { params: Promise<{ 
         actions={<StatusBadge status={enquiry.status} />}
       />
 
-      <div className="grid gap-6 lg:grid-cols-3">
-        <div className="space-y-6 lg:col-span-2">
-          <section className="adm-card p-5 sm:p-6">
+      <div className="grid gap-5 sm:gap-6 lg:grid-cols-3">
+        <div className="space-y-5 sm:space-y-6 lg:col-span-2">
+          <section className="adm-card p-4 sm:p-6">
             <div className="mb-4 flex flex-wrap items-center gap-2">
               <Pill tone="gold">{typeLabel(enquiry.type)}</Pill>
               {enquiry.item_name && <Pill>{enquiry.item_name}</Pill>}
               {enquiry.source_page && <span className="text-xs text-text-light">from {enquiry.source_page}</span>}
             </div>
 
-            <dl className="grid gap-4 sm:grid-cols-2">
+            <dl className="grid gap-3 sm:gap-4 sm:grid-cols-2">
               <div>
                 <dt className="text-[11px] font-bold uppercase tracking-wider text-text-muted">Phone</dt>
                 <dd className="mt-0.5 text-sm font-medium">{enquiry.phone || "—"}</dd>
@@ -71,16 +71,16 @@ export default async function EnquiryDetailPage({ params }: { params: Promise<{ 
             </dl>
 
             {enquiry.message && (
-              <div className="mt-5">
+              <div className="mt-4 sm:mt-5">
                 <p className="text-[11px] font-bold uppercase tracking-wider text-text-muted">Message</p>
-                <p className="mt-1 whitespace-pre-wrap rounded-sm bg-cream p-4 text-sm leading-relaxed">{enquiry.message}</p>
+                <p className="mt-1 whitespace-pre-wrap rounded-sm bg-cream p-3.5 text-sm leading-relaxed sm:p-4">{enquiry.message}</p>
               </div>
             )}
 
             {details.length > 0 && (
-              <div className="mt-5">
+              <div className="mt-4 sm:mt-5">
                 <p className="mb-2 text-[11px] font-bold uppercase tracking-wider text-text-muted">Booking details</p>
-                <dl className="grid gap-x-6 gap-y-3 rounded-sm border border-border-light p-4 sm:grid-cols-2">
+                <dl className="grid gap-x-6 gap-y-2.5 rounded-sm border border-border-light p-3.5 sm:gap-y-3 sm:p-4 sm:grid-cols-2">
                   {details.map(([k, v]) => (
                     <div key={k}>
                       <dt className="text-xs text-text-muted">{humanKey(k)}</dt>
@@ -92,17 +92,17 @@ export default async function EnquiryDetailPage({ params }: { params: Promise<{ 
             )}
 
             {hasRole(user.role, "viewer") && (
-              <div className="mt-6 flex flex-wrap gap-2 border-t border-border-light pt-5">
+              <div className="mt-5 sm:mt-6 flex flex-wrap gap-2 border-t border-border-light pt-4 sm:pt-5">
                 {enquiry.phone && (
                   <>
-                    <a href={`tel:${enquiry.phone}`} className="adm-btn-ghost adm-btn-sm"><Phone size={14} /> Call</a>
-                    <a href={`https://wa.me/${waNumber}?text=${waText}`} target="_blank" rel="noreferrer" className="adm-btn adm-btn-sm bg-[#25D366] text-white hover:bg-[#1fb857]">
+                    <a href={`tel:${enquiry.phone}`} className="adm-btn-ghost adm-btn-sm flex-1 sm:flex-none justify-center"><Phone size={14} /> Call</a>
+                    <a href={`https://wa.me/${waNumber}?text=${waText}`} target="_blank" rel="noreferrer" className="adm-btn adm-btn-sm flex-1 sm:flex-none justify-center bg-[#25D366] text-white hover:bg-[#1fb857]">
                       <MessageCircle size={14} /> WhatsApp
                     </a>
                   </>
                 )}
                 {enquiry.email && (
-                  <a href={`mailto:${enquiry.email}?subject=${encodeURIComponent(`Your enquiry ${enquiry.ref} - West Camp Jaisalmer`)}`} className="adm-btn-ghost adm-btn-sm">
+                  <a href={`mailto:${enquiry.email}?subject=${encodeURIComponent(`Your enquiry ${enquiry.ref} - West Camp Jaisalmer`)}`} className="adm-btn-ghost adm-btn-sm flex-1 sm:flex-none justify-center">
                     <Mail size={14} /> Email
                   </a>
                 )}
@@ -110,8 +110,8 @@ export default async function EnquiryDetailPage({ params }: { params: Promise<{ 
             )}
           </section>
 
-          <section className="adm-card p-5 sm:p-6">
-            <h2 className="font-serif text-lg font-bold text-deep-teal">Activity & notes</h2>
+          <section className="adm-card p-4 sm:p-6">
+            <h2 className="font-serif text-base font-bold text-deep-teal sm:text-lg">Activity & notes</h2>
             {notes.length === 0 ? (
               <p className="mt-3 text-sm text-text-muted">No activity yet.</p>
             ) : (
@@ -129,8 +129,8 @@ export default async function EnquiryDetailPage({ params }: { params: Promise<{ 
           </section>
         </div>
 
-        <aside className="adm-card h-fit p-5 sm:p-6">
-          <h2 className="mb-4 font-serif text-lg font-bold text-deep-teal">Manage</h2>
+        <aside className="adm-card h-fit p-4 sm:p-6">
+          <h2 className="mb-3 font-serif text-base font-bold text-deep-teal sm:mb-4 sm:text-lg">Manage</h2>
           <EnquiryControls
             id={id}
             status={enquiry.status}

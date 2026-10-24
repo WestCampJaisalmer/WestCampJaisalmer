@@ -61,26 +61,28 @@ export default async function ResourceListPage({
         title={def.plural}
         description={def.description}
         actions={
-          <>
+          <div className="flex w-full flex-wrap gap-2 sm:w-auto">
             {def.publicPath && (
-              <a href={def.publicPath} target="_blank" rel="noreferrer" className="adm-btn-ghost"><ExternalLink size={15} /> View on site</a>
+              <a href={def.publicPath} target="_blank" rel="noreferrer" className="adm-btn-ghost flex-1 justify-center sm:flex-none"><ExternalLink size={15} /> View on site</a>
             )}
             {canWrite && (
-              <Link href={`/admin/content/${def.key}/new`} className="adm-btn-primary"><Plus size={16} /> Add {def.singular.toLowerCase()}</Link>
+              <Link href={`/admin/content/${def.key}/new`} className="adm-btn-primary flex-1 justify-center sm:flex-none">
+                <Plus size={16} /> {def.key === "gallery-categories" ? "Add" : `Add ${def.singular.toLowerCase()}`}
+              </Link>
             )}
-          </>
+          </div>
         }
       />
       {saved && <Flash>Saved. The website will show the change within moments.</Flash>}
       {reviewCounts && (
-        <div className="mb-4 flex gap-2 overflow-x-auto pb-1">
+        <div className="-mx-3.5 mb-4 flex gap-2 overflow-x-auto px-3.5 pb-2 pt-0.5 no-scrollbar sm:mx-0 sm:px-0">
           {([["all", "All"], ["pending", "Awaiting approval"], ["approved", "Approved"], ["rejected", "Rejected"]] as const).map(([k, label]) => (
             <Link
               key={k}
               href={`/admin/content/testimonials?status=${k}`}
               aria-current={tab === k ? "page" : undefined}
-              className={`whitespace-nowrap rounded-full border px-3.5 py-1.5 text-xs font-bold transition ${
-                tab === k ? "border-deep-teal bg-deep-teal text-white" : "border-[#DDD2BF] bg-white text-deep-teal hover:bg-cream-alt"
+              className={`shrink-0 whitespace-nowrap rounded-full border px-3.5 py-1.5 text-xs font-bold transition ${
+                tab === k ? "border-deep-teal bg-deep-teal text-white shadow-sm" : "border-[#DDD2BF] bg-white text-deep-teal hover:bg-cream-alt"
               }`}
             >
               {label} <span className={tab === k ? "text-white/70" : k === "pending" && reviewCounts.pending > 0 ? "text-gold-dark" : "text-text-light"}>{reviewCounts[k]}</span>

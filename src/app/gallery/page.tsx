@@ -340,20 +340,20 @@ _Hello! I saw this photo in your website gallery and would love to experience th
       {/* Full-screen Lightbox Modal */}
       {activePhoto && lightboxIndex !== null && (
         <div 
-          className="fixed inset-0 z-[1000] bg-black/95 backdrop-blur-md flex flex-col justify-between p-3 sm:p-6 animate-in fade-in duration-200"
+          className="fixed inset-0 z-[1050] bg-black/95 backdrop-blur-md flex flex-col justify-between p-2 sm:p-4 md:p-6 animate-in fade-in duration-200"
           onClick={() => setLightboxIndex(null)}
         >
           {/* Top Bar: Counter & Close Button */}
           <div 
-            className="flex items-center justify-between w-full max-w-6xl mx-auto text-white z-20 shrink-0 pb-2"
+            className="flex items-center justify-between w-full max-w-6xl mx-auto text-white z-20 shrink-0 pb-1 sm:pb-2"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5 sm:gap-2">
               <span className="font-sans text-xs sm:text-sm font-bold tracking-wider text-[#DF9745]">
                 {lightboxIndex + 1} / {filteredImages.length}
               </span>
               <span className="text-white/40">•</span>
-              <span className="font-sans text-xs sm:text-sm text-white/80 hidden sm:inline">
+              <span className="font-sans text-xs sm:text-sm text-white/80">
                 {activePhoto.categoryLabel}
               </span>
             </div>
@@ -362,15 +362,15 @@ _Hello! I saw this photo in your website gallery and would love to experience th
               type="button"
               onClick={() => setLightboxIndex(null)}
               aria-label="Close Lightbox"
-              className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors cursor-pointer border border-white/20"
+              className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors cursor-pointer border border-white/20"
             >
-              <X size={20} />
+              <X size={18} />
             </button>
           </div>
 
           {/* Center Stage: Image and Left/Right Nav */}
           <div 
-            className="relative flex-1 flex items-center justify-center max-w-6xl mx-auto w-full my-auto overflow-hidden py-2"
+            className="relative flex-1 flex items-center justify-center max-w-6xl mx-auto w-full my-auto overflow-hidden py-1 sm:py-2"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Prev Button */}
@@ -380,9 +380,9 @@ _Hello! I saw this photo in your website gallery and would love to experience th
                 prev !== null ? (prev === 0 ? filteredImages.length - 1 : prev - 1) : null
               )}
               aria-label="Previous Photo"
-              className="absolute left-1 sm:left-3 z-30 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-black/60 hover:bg-black/90 text-white border border-white/25 flex items-center justify-center transition-all cursor-pointer hover:scale-105 active:scale-95"
+              className="absolute left-1 sm:left-3 z-30 w-8 h-8 sm:w-11 sm:h-11 rounded-full bg-black/60 hover:bg-black/90 text-white border border-white/25 flex items-center justify-center transition-all cursor-pointer hover:scale-105 active:scale-95"
             >
-              <ChevronLeft size={24} />
+              <ChevronLeft size={18} className="sm:w-6 sm:h-6" />
             </button>
 
             {/* Main Lightbox Image (Visibly Rounded Corners) */}
@@ -394,7 +394,7 @@ _Hello! I saw this photo in your website gallery and would love to experience th
                 height={800}
                 priority
                 sizes="(max-width: 1024px) 100vw, 1200px"
-                className="max-h-[58vh] sm:max-h-[66vh] md:max-h-[70vh] w-auto max-w-[90vw] sm:max-w-4xl object-contain rounded-[10px] shadow-2xl border border-white/15"
+                className="max-h-[50vh] sm:max-h-[66vh] md:max-h-[70vh] w-auto max-w-[92vw] sm:max-w-4xl object-contain rounded-[10px] shadow-2xl border border-white/15"
               />
             </div>
 
@@ -405,43 +405,43 @@ _Hello! I saw this photo in your website gallery and would love to experience th
                 prev !== null ? (prev === filteredImages.length - 1 ? 0 : prev + 1) : null
               )}
               aria-label="Next Photo"
-              className="absolute right-1 sm:right-3 z-30 w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-black/60 hover:bg-black/90 text-white border border-white/25 flex items-center justify-center transition-all cursor-pointer hover:scale-105 active:scale-95"
+              className="absolute right-1 sm:right-3 z-30 w-8 h-8 sm:w-11 sm:h-11 rounded-full bg-black/60 hover:bg-black/90 text-white border border-white/25 flex items-center justify-center transition-all cursor-pointer hover:scale-105 active:scale-95"
             >
-              <ChevronRight size={24} />
+              <ChevronRight size={18} className="sm:w-6 sm:h-6" />
             </button>
           </div>
 
           {/* Bottom Caption Bar with Quick Actions */}
           <div 
-            className="w-full max-w-6xl mx-auto bg-black/60 border border-white/15 rounded-xl p-3.5 sm:p-4 text-white flex flex-col md:flex-row items-center justify-between gap-3 shrink-0 z-20"
+            className="w-full max-w-6xl mx-auto bg-black/60 border border-white/15 rounded-xl p-2.5 sm:p-4 text-white flex flex-col md:flex-row items-center justify-between gap-2 sm:gap-3 shrink-0 z-20"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex flex-col text-center md:text-left">
-              <h4 className="font-serif font-bold text-base sm:text-lg text-white">
+            <div className="flex flex-col text-center md:text-left w-full md:w-auto">
+              <h4 className="font-serif font-bold text-sm sm:text-base md:text-lg text-white truncate">
                 {activePhoto.title}
               </h4>
-              <p className="flex items-center justify-center md:justify-start gap-1.5 font-sans text-xs text-[#DF9745] mt-0.5">
-                <MapPin size={13} className="shrink-0" />
-                <span>{activePhoto.location}</span>
+              <p className="flex items-center justify-center md:justify-start gap-1.5 font-sans text-[11px] sm:text-xs text-[#DF9745] mt-0.5">
+                <MapPin size={12} className="shrink-0" />
+                <span className="truncate">{activePhoto.location}</span>
                 <span className="text-white/40">•</span>
                 <span className="text-white/80">{activePhoto.categoryLabel}</span>
               </p>
             </div>
 
-            <div className="flex items-center gap-2.5 w-full md:w-auto justify-center">
+            <div className="grid grid-cols-2 gap-2 w-full md:w-auto justify-center">
               <button
                 type="button"
                 onClick={() => handleWhatsAppPhotoInquiry(activePhoto)}
-                className="inline-flex items-center justify-center gap-1.5 px-4 py-2 sm:py-2.5 rounded-lg bg-[#25D366] hover:bg-[#20bd5a] text-white font-sans text-xs sm:text-sm font-bold shadow-md transition-all active:scale-95 cursor-pointer"
+                className="inline-flex items-center justify-center gap-1 sm:gap-1.5 px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg bg-[#25D366] hover:bg-[#20bd5a] text-white font-sans text-xs sm:text-sm font-bold shadow-md transition-all active:scale-95 cursor-pointer"
               >
                 <MessageCircle size={15} />
-                <span>WhatsApp Inquiry</span>
+                <span>WhatsApp</span>
               </button>
 
               <button
                 type="button"
                 onClick={() => handleBookFromGallery(activePhoto)}
-                className="inline-flex items-center justify-center gap-1.5 px-4 py-2 sm:py-2.5 rounded-lg bg-[#C97F2C] hover:bg-[#AF6E26] text-white font-sans text-xs sm:text-sm font-bold shadow-md transition-all active:scale-95 cursor-pointer"
+                className="inline-flex items-center justify-center gap-1 sm:gap-1.5 px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg bg-[#C97F2C] hover:bg-[#AF6E26] text-white font-sans text-xs sm:text-sm font-bold shadow-md transition-all active:scale-95 cursor-pointer"
               >
                 <Calendar size={14} />
                 <span>Book This</span>

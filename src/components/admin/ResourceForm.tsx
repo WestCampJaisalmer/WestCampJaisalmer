@@ -98,12 +98,12 @@ export default function ResourceForm({ def, id, item }: Props) {
   const featured = vals ? vals.featured === "on" : item?.featured ?? false;
 
   return (
-    <form action={action} className="grid gap-6 lg:grid-cols-3">
-      <div className="adm-card p-5 sm:p-6 lg:col-span-2">
+    <form action={action} className="grid gap-5 sm:gap-6 lg:grid-cols-3">
+      <div className="adm-card p-4 sm:p-6 lg:col-span-2">
         {state?.error && (
-          <div role="alert" className="mb-5 rounded-sm border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700">{state.error}</div>
+          <div role="alert" className="mb-4 sm:mb-5 rounded-sm border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700">{state.error}</div>
         )}
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-4 sm:gap-5 sm:grid-cols-2">
           {def.fields.map((f) => (
             <div key={f.name} className={f.half ? "" : "sm:col-span-2"}>
               {renderField(f)}
@@ -112,9 +112,9 @@ export default function ResourceForm({ def, id, item }: Props) {
         </div>
       </div>
 
-      <aside className="h-fit space-y-5 lg:sticky lg:top-6">
-        <div className="adm-card p-5">
-          <h2 className="mb-4 font-serif text-lg font-bold text-deep-teal">Publishing</h2>
+      <aside className="h-fit space-y-4 sm:space-y-5 lg:sticky lg:top-6">
+        <div className="adm-card p-4 sm:p-5">
+          <h2 className="mb-3 sm:mb-4 font-serif text-base sm:text-lg font-bold text-deep-teal">Publishing</h2>
           <label className="flex cursor-pointer items-start gap-3">
             <input type="checkbox" name="active" defaultChecked={active} className="mt-0.5 h-4 w-4 cursor-pointer accent-gold" />
             <span>
@@ -123,7 +123,7 @@ export default function ResourceForm({ def, id, item }: Props) {
             </span>
           </label>
           {def.hasFeatured && (
-            <label className="mt-4 flex cursor-pointer items-start gap-3">
+            <label className="mt-3.5 sm:mt-4 flex cursor-pointer items-start gap-3">
               <input type="checkbox" name="featured" defaultChecked={featured} className="mt-0.5 h-4 w-4 cursor-pointer accent-gold" />
               <span>
                 <span className="block text-sm font-semibold text-text-main">Featured</span>
@@ -131,14 +131,23 @@ export default function ResourceForm({ def, id, item }: Props) {
               </span>
             </label>
           )}
-          <div className="mt-5 flex flex-col gap-2">
-            <button type="submit" disabled={pending} className="adm-btn-primary w-full">
+          <div className="mt-5 flex justify-between gap-2">
+            <button type="submit" disabled={pending} className="adm-btn-primary flex-1">
               {pending ? <Loader2 size={16} className="animate-spin" /> : <Save size={16} />}
-              {pending ? "Saving…" : id ? "Save changes" : `Add ${def.singular.toLowerCase()}`}
+              {pending ? "Saving…" : id ? "Save changes" : def.key === "gallery-categories" ? "Add" : `Add ${def.singular.toLowerCase()}`}
             </button>
-            <Link href={`/admin/content/${def.key}`} className="adm-btn-ghost w-full">Cancel</Link>
+            <Link href={`/admin/content/${def.key}`} className="adm-btn-ghost flex-1">Cancel</Link>
           </div>
           <p className="mt-3 text-center text-[11px] text-text-light">Changes appear on the live site within moments.</p>
+        </div>
+
+        {/* Mobile quick save bar */}
+        <div className="sticky bottom-4 z-20 flex items-center gap-2 rounded-lg border border-border-light bg-white/95 p-2.5 shadow-hover backdrop-blur-sm lg:hidden">
+          <button type="submit" disabled={pending} className="adm-btn-primary flex-1 justify-center !py-2 text-xs font-semibold">
+            {pending ? <Loader2 size={14} className="animate-spin" /> : <Save size={14} />}
+            {pending ? "Saving…" : id ? "Save changes" : def.key === "gallery-categories" ? "Add" : `Add ${def.singular.toLowerCase()}`}
+          </button>
+          <Link href={`/admin/content/${def.key}`} className="adm-btn-ghost !py-2 text-xs">Cancel</Link>
         </div>
       </aside>
     </form>

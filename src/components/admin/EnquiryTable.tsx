@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
-import { Loader2, Trash2 } from "lucide-react";
+import { Eye, Loader2, Phone, Trash2 } from "lucide-react";
 import { bulkEnquiries } from "@/app/admin/actions/enquiries";
 import { ENQUIRY_STATUSES, typeLabel } from "@/lib/enquiry-constants";
 import { StatusBadge, EmptyState } from "@/components/admin/ui";
@@ -56,10 +56,10 @@ export default function EnquiryTable({ rows, canWrite, canDelete }: { rows: Enqu
   return (
     <div>
       {canWrite && selected.size > 0 && (
-        <div className="flex flex-wrap items-center gap-3 border-b border-gold/30 bg-gold/10 px-4 py-2.5 text-sm">
+        <div className="sticky top-0 z-10 flex flex-wrap items-center gap-2 border-b border-gold/30 bg-gold/15 px-3.5 py-2.5 text-xs sm:gap-3 sm:px-4 sm:text-sm">
           <span className="font-semibold text-deep-teal">{selected.size} selected</span>
           <select
-            className="adm-input !w-auto !py-1.5 text-xs"
+            className="adm-input !w-auto !py-1 text-xs"
             defaultValue=""
             disabled={pending}
             onChange={(e) => {
@@ -74,12 +74,12 @@ export default function EnquiryTable({ rows, canWrite, canDelete }: { rows: Enqu
             ))}
           </select>
           {canDelete && (
-            <button type="button" className="adm-btn-danger adm-btn-sm" disabled={pending} onClick={() => run("delete")}>
+            <button type="button" className="adm-btn-danger adm-btn-sm !py-1 text-xs" disabled={pending} onClick={() => run("delete")}>
               <Trash2 size={13} /> Delete
             </button>
           )}
-          {pending && <Loader2 size={15} className="animate-spin text-gold" />}
-          <button type="button" className="ml-auto text-xs font-semibold text-text-muted hover:text-deep-teal" onClick={() => setSelected(new Set())}>
+          {pending && <Loader2 size={14} className="animate-spin text-gold" />}
+          <button type="button" className="ml-auto font-semibold text-text-muted hover:text-deep-teal" onClick={() => setSelected(new Set())}>
             Clear
           </button>
         </div>
@@ -90,8 +90,103 @@ export default function EnquiryTable({ rows, canWrite, canDelete }: { rows: Enqu
         </p>
       )}
 
-      <div className="overflow-x-auto">
-        <table className="w-full min-w-[820px]">
+      {/* Mobile card list view */}
+      {canWrite && (
+        <div className="flex items-center justify-between border-b border-border-light bg-cream/40 px-3.5 py-2 text-xs md:hidden">
+          <label className="flex cursor-pointer items-center gap-2 font-medium text-text-muted">
+            <input
+              type="checkbox"
+              checked={allOn}
+              onChange={() => setSelected(allOn ? new Set() : new Set(rows.map((r) => r.id)))}
+              className="h-4 w-4 cursor-pointer accent-gold"
+            />
+            <span>Select all inquiries</span>
+          </label>
+          <span className="text-[11px] text-text-light">{rows.length} total</span>
+        </div>
+      )}
+
+      <div className="divide-y divide-border-light md:hidden">
+        {rows.map((r) => (
+          <div
+            key={r.id}
+            className={`p-3.5 transition hover:bg-cream/40 ${selected.has(r.id) ? "bg-gold/5" : ""} ${r.status === "new" ? "bg-amber-50/20" : ""}`}
+          >
+            {/* Top row: Checkbox, Name, Status */}
+            <div className="flex items-start justify-between gap-2">
+              <div className="flex min-w-0 items-start gap-2.5">
+                {canWrite && (
+                  <input
+                    type="checkbox"
+                    checked={selected.has(r.id)}
+                    onChange={() => toggle(r.id)}
+                    aria-label={`Select ${r.name}`}
+                    className="mt-0.5 h-4 w-4 shrink-0 cursor-pointer accent-gold"
+                  />
+                )}
+                <div className="min-w-0">
+                  <div className="flex flex-wrap items-center gap-1.5">
+                    {r.status === "new" && <span className="h-2 w-2 shrink-0 rounded-full bg-gold" aria-label="New" />}
+                    <Link href={`/admin/enquiries/${r.id}`} className="truncate text-sm font-semibold text-deep-teal hover:text-gold">
+                      {r.name}
+                    </Link>
+                    <span className="font-mono text-[10px] text-text-light">({r.ref})</span>
+                  </div>
+                  <p className="mt-0.5 truncate text-xs text-text-muted">
+                    {r.phone || r.email || "No contact info"}
+                  </p>
+                </div>
+              </div>
+              <div className="shrink-0">
+                <StatusBadge status={r.status} />
+              </div>
+            </div>
+
+            {/* Middle row: Request info */}
+            <div className="mt-2.5 rounded-sm bg-cream/60 px-2.5 py-1.5 text-xs">
+              <div className="flex items-center justify-between gap-2">
+                <span className="font-medium text-text-main">{typeLabel(r.type)}</span>
+                <span className="text-[11px] text-text-light">{r.ago}</span>
+              </div>
+              {r.item_name && (
+                <p className="mt-0.5 truncate text-[11px] text-text-muted">{r.item_name}</p>
+              )}
+            </div>
+
+            {/* Bottom row: Assigned & Action Buttons */}
+            <div className="mt-2.5 flex items-center justify-between gap-2 pt-1 text-xs">
+              <div className="truncate text-[11px] text-text-muted">
+                <span className="text-text-light">Assigned: </span>
+                <span className="font-medium text-text-main">{r.assigned_name ?? "—"}</span>
+              </div>
+
+              <div className="flex shrink-0 items-center gap-2">
+                {r.phone && (
+                  <a
+                    href={`tel:${r.phone}`}
+                    className="flex h-7 w-7 items-center justify-center rounded-sm border border-border-light bg-white text-text-muted transition hover:border-gold hover:text-gold"
+                    title={`Call ${r.phone}`}
+                  >
+                    <Phone size={13} />
+                  </a>
+                )}
+                <Link
+                  href={`/admin/enquiries/${r.id}`}
+                  className="adm-btn-ghost adm-btn-sm inline-flex items-center gap-1.5 !py-1 text-xs font-semibold text-deep-teal hover:border-gold hover:text-gold"
+                  title={`View ${r.name}'s enquiry`}
+                >
+                  <Eye size={13} />
+                  <span>View</span>
+                </Link>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Desktop/tablet table view */}
+      <div className="hidden md:block overflow-x-auto">
+        <table className="w-full min-w-[880px]">
           <thead className="border-b border-border-light bg-cream">
             <tr>
               {canWrite && (
@@ -110,6 +205,7 @@ export default function EnquiryTable({ rows, canWrite, canDelete }: { rows: Enqu
               <th className="adm-th">Status</th>
               <th className="adm-th">Assigned</th>
               <th className="adm-th">Received</th>
+              <th className="adm-th text-right">Actions</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-border-light">
@@ -145,6 +241,16 @@ export default function EnquiryTable({ rows, canWrite, canDelete }: { rows: Enqu
                   {r.created}
                   <span className="block text-text-light">{r.ago}</span>
                   <span className="block font-mono text-[10px] text-text-light">{r.ref}</span>
+                </td>
+                <td className="adm-td text-right">
+                  <Link
+                    href={`/admin/enquiries/${r.id}`}
+                    className="adm-btn-ghost adm-btn-sm inline-flex items-center gap-1.5 hover:border-gold hover:text-gold"
+                    title={`View ${r.name}'s enquiry`}
+                  >
+                    <Eye size={13} />
+                    <span>View</span>
+                  </Link>
                 </td>
               </tr>
             ))}

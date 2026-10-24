@@ -24,22 +24,22 @@ export default function ItineraryField({ name, label, initial = [] }: { name: st
       <div className="space-y-3">
         {days.map((d, i) => (
           <div key={i} className="rounded-sm border border-border-light bg-cream/60 p-3">
-            <div className="mb-2 flex items-center gap-2">
+            <div className="mb-2 flex flex-wrap items-center gap-2">
               <input
                 value={d.day}
                 onChange={(e) => set(i, { day: e.target.value })}
                 placeholder={`Day ${i + 1}`}
                 aria-label={`Day ${i + 1} label`}
-                className="adm-input !w-24 !py-1.5 text-xs font-bold"
+                className="adm-input !w-24 !py-1.5 text-xs font-bold shrink-0"
               />
               <input
                 value={d.title}
                 onChange={(e) => set(i, { title: e.target.value })}
                 placeholder="Title, e.g. Golden Fort & Haveli Heritage"
                 aria-label={`Day ${i + 1} title`}
-                className="adm-input !py-1.5"
+                className="adm-input !py-1.5 min-w-[130px] flex-1"
               />
-              <div className="flex shrink-0">
+              <div className="flex shrink-0 ml-auto">
                 <button type="button" onClick={() => move(i, -1)} disabled={i === 0} className="cursor-pointer rounded-sm p-1.5 text-text-muted hover:bg-white disabled:opacity-30" aria-label="Move day up"><ArrowUp size={15} /></button>
                 <button type="button" onClick={() => move(i, 1)} disabled={i === days.length - 1} className="cursor-pointer rounded-sm p-1.5 text-text-muted hover:bg-white disabled:opacity-30" aria-label="Move day down"><ArrowDown size={15} /></button>
                 <button type="button" onClick={() => setDays((x) => x.filter((_, j) => j !== i))} className="cursor-pointer rounded-sm p-1.5 text-red-500 hover:bg-white" aria-label="Remove day"><Trash2 size={15} /></button>

@@ -24,6 +24,21 @@ export default function PlanTripModal({ isOpen, onClose }: PlanTripModalProps) {
     notes: "",
   });
 
+  // Lock body scroll when modal is open and handle Escape key
+  React.useEffect(() => {
+    if (!isOpen) return;
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.body.style.overflow = prevOverflow;
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -76,28 +91,28 @@ _Please share custom tour plan options and pricing._`;
 
   return (
     <div
-      className="fixed inset-0 bg-black/80 backdrop-blur-md z-[1000] flex items-center justify-center p-2.5 sm:p-4 md:p-6 animate-in fade-in duration-200"
+      className="fixed inset-0 bg-black/80 backdrop-blur-md z-[1050] flex items-center justify-center p-2.5 sm:p-4 md:p-6 animate-in fade-in duration-200"
       onClick={onClose}
     >
       <div
-        className="bg-white rounded-xl max-w-xl w-full max-h-[92vh] sm:max-h-[90vh] overflow-y-auto no-scrollbar p-4 sm:p-7 md:p-8 relative shadow-2xl animate-in zoom-in-95 duration-200 border border-border-light"
+        className="bg-white rounded-2xl max-w-xl w-full max-h-[92vh] sm:max-h-[90vh] overflow-y-auto no-scrollbar p-3.5 sm:p-7 md:p-8 relative shadow-2xl animate-in zoom-in-95 duration-200 border border-border-light"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close Button */}
         <button
-          className="absolute top-3 right-3 sm:top-5 sm:right-5 z-20 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-cream border border-border-light flex items-center justify-center text-text-muted hover:text-text-main hover:bg-cream-alt transition-all duration-300 cursor-pointer"
+          className="absolute top-2.5 right-2.5 sm:top-5 sm:right-5 z-20 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-cream border border-border-light flex items-center justify-center text-text-muted hover:text-text-main hover:bg-cream-alt transition-all duration-300 cursor-pointer"
           onClick={onClose}
           aria-label="Close modal"
         >
-          <X size={18} />
+          <X size={17} />
         </button>
 
         {submitted ? (
-          <div className="text-center py-6 sm:py-8 px-2">
-            <div className="w-16 h-16 rounded-full bg-[#E8F8EE] flex items-center justify-center text-[#25D366] mx-auto mb-3 sm:mb-4">
-              <CheckCircle size={40} className="text-[#25D366]" />
+          <div className="text-center py-5 sm:py-8 px-1 sm:px-2">
+            <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-[#E8F8EE] flex items-center justify-center text-[#25D366] mx-auto mb-3 sm:mb-4">
+              <CheckCircle size={38} className="text-[#25D366]" />
             </div>
-            <h3 className="font-serif text-xl sm:text-2xl font-bold text-[#123038] mb-2">
+            <h3 className="font-serif text-xl sm:text-2xl font-bold text-[#123038] mb-2 leading-snug">
               {formData.name || "Traveler"}, Your Request Is Submitted!
             </h3>
 
@@ -107,13 +122,13 @@ _Please share custom tour plan options and pricing._`;
               personalized tour options and direct quotes.
             </p>
 
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-2.5">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-2.5">
               {lastWhatsAppUrl && (
                 <a
                   href={lastWhatsAppUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-2.5 sm:py-3 rounded-lg bg-[#25D366] hover:bg-[#20bd5a] text-white font-sans font-bold text-xs sm:text-sm shadow-md transition-all cursor-pointer"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 sm:py-3 rounded-lg bg-[#25D366] hover:bg-[#20bd5a] text-white font-sans font-bold text-xs sm:text-sm shadow-md transition-all cursor-pointer"
                 >
                   <MessageCircle size={18} />
                   <span>Chat on WhatsApp</span>
@@ -121,7 +136,7 @@ _Please share custom tour plan options and pricing._`;
               )}
               <button
                 type="button"
-                className="w-full sm:w-auto inline-flex items-center justify-center px-6 py-2.5 sm:py-3 rounded-lg bg-[#123038] hover:bg-[#1a434e] text-white font-sans font-semibold text-xs sm:text-sm transition-all cursor-pointer"
+                className="w-full sm:w-auto inline-flex items-center justify-center px-5 py-2.5 sm:py-3 rounded-lg bg-[#123038] hover:bg-[#1a434e] text-white font-sans font-semibold text-xs sm:text-sm transition-all cursor-pointer"
                 onClick={onClose}
               >
                 Close
@@ -131,14 +146,14 @@ _Please share custom tour plan options and pricing._`;
         ) : (
           <div>
             {/* Modal Header */}
-            <div className="mb-4 sm:mb-6 pr-9 sm:pr-12">
-              <span className="font-sans text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.2em] text-[#AF6E26] block mb-1">
+            <div className="mb-3.5 sm:mb-6 pr-8 sm:pr-12">
+              <span className="font-sans text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.2em] text-[#AF6E26] block mb-0.5 sm:mb-1">
                 CUSTOM RAJASTHAN EXPERIENCE
               </span>
               <h3 className="font-serif text-lg sm:text-2xl md:text-3xl font-bold text-[#123038] tracking-tight leading-tight">
                 Plan Your Royal Jaisalmer Trip
               </h3>
-              <p className="font-sans text-[11px] sm:text-xs md:text-sm text-[#6C675E] mt-1 leading-relaxed">
+              <p className="font-sans text-[11px] sm:text-xs md:text-sm text-[#6C675E] mt-0.5 sm:mt-1 leading-relaxed">
                 Tell us your holiday preferences and get an instant custom quote
                 directly on WhatsApp from our local team.
               </p>
@@ -158,7 +173,7 @@ _Please share custom tour plan options and pricing._`;
                     type="text"
                     required
                     placeholder="e.g. Aditi Sharma"
-                    className="w-full px-3 sm:px-3.5 py-2 sm:py-2.5 rounded-lg border border-border-light bg-[#FAF6F0] font-sans text-xs sm:text-sm text-text-main focus:bg-white focus:border-[#C97F2C] focus:outline-none transition-colors"
+                    className="w-full px-3 sm:px-3.5 py-2 sm:py-2.5 rounded-[5px] border border-border-light bg-[#FAF6F0] font-sans text-xs sm:text-sm text-text-main focus:bg-white focus:border-[#C97F2C] focus:outline-none transition-colors"
                     value={formData.name}
                     onChange={(e) =>
                       setFormData({ ...formData, name: e.target.value })
@@ -173,7 +188,7 @@ _Please share custom tour plan options and pricing._`;
                     type="tel"
                     required
                     placeholder="+91 78772 21729"
-                    className="w-full px-3 sm:px-3.5 py-2 sm:py-2.5 rounded-lg border border-border-light bg-[#FAF6F0] font-sans text-xs sm:text-sm text-text-main focus:bg-white focus:border-[#C97F2C] focus:outline-none transition-colors"
+                    className="w-full px-3 sm:px-3.5 py-2 sm:py-2.5 rounded-[5px] border border-border-light bg-[#FAF6F0] font-sans text-xs sm:text-sm text-text-main focus:bg-white focus:border-[#C97F2C] focus:outline-none transition-colors"
                     value={formData.phone}
                     onChange={(e) =>
                       setFormData({ ...formData, phone: e.target.value })
@@ -191,7 +206,7 @@ _Please share custom tour plan options and pricing._`;
                   <input
                     type="email"
                     placeholder="you@domain.com"
-                    className="w-full px-3 sm:px-3.5 py-2 sm:py-2.5 rounded-lg border border-border-light bg-[#FAF6F0] font-sans text-xs sm:text-sm text-text-main focus:bg-white focus:border-[#C97F2C] focus:outline-none transition-colors"
+                    className="w-full px-3 sm:px-3.5 py-2 sm:py-2.5 rounded-[5px] border border-border-light bg-[#FAF6F0] font-sans text-xs sm:text-sm text-text-main focus:bg-white focus:border-[#C97F2C] focus:outline-none transition-colors"
                     value={formData.email}
                     onChange={(e) =>
                       setFormData({ ...formData, email: e.target.value })
@@ -204,7 +219,7 @@ _Please share custom tour plan options and pricing._`;
                   </label>
                   <input
                     type="date"
-                    className="w-full px-3 sm:px-3.5 py-2 sm:py-2.5 rounded-lg border border-border-light bg-[#FAF6F0] font-sans text-xs sm:text-sm text-text-main focus:bg-white focus:border-[#C97F2C] focus:outline-none transition-colors"
+                    className="w-full px-3 sm:px-3.5 py-2 sm:py-2.5 rounded-[5px] border border-border-light bg-[#FAF6F0] font-sans text-xs sm:text-sm text-text-main focus:bg-white focus:border-[#C97F2C] focus:outline-none transition-colors"
                     value={formData.date}
                     onChange={(e) =>
                       setFormData({ ...formData, date: e.target.value })
@@ -220,7 +235,7 @@ _Please share custom tour plan options and pricing._`;
                     Duration
                   </label>
                   <select
-                    className="w-full px-3 sm:px-3.5 py-2 sm:py-2.5 rounded-lg border border-border-light bg-[#FAF6F0] font-sans text-xs sm:text-sm text-text-main focus:bg-white focus:border-[#C97F2C] focus:outline-none transition-colors cursor-pointer"
+                    className="w-full px-3 sm:px-3.5 py-2 sm:py-2.5 rounded-[5px] border border-border-light bg-[#FAF6F0] font-sans text-xs sm:text-sm text-text-main focus:bg-white focus:border-[#C97F2C] focus:outline-none transition-colors cursor-pointer"
                     value={formData.days}
                     onChange={(e) =>
                       setFormData({ ...formData, days: e.target.value })
@@ -237,7 +252,7 @@ _Please share custom tour plan options and pricing._`;
                     Travelers
                   </label>
                   <select
-                    className="w-full px-3 sm:px-3.5 py-2 sm:py-2.5 rounded-lg border border-border-light bg-[#FAF6F0] font-sans text-xs sm:text-sm text-text-main focus:bg-white focus:border-[#C97F2C] focus:outline-none transition-colors cursor-pointer"
+                    className="w-full px-3 sm:px-3.5 py-2 sm:py-2.5 rounded-[5px] border border-border-light bg-[#FAF6F0] font-sans text-xs sm:text-sm text-text-main focus:bg-white focus:border-[#C97F2C] focus:outline-none transition-colors cursor-pointer"
                     value={formData.guests}
                     onChange={(e) =>
                       setFormData({ ...formData, guests: e.target.value })
@@ -272,7 +287,7 @@ _Please share custom tour plan options and pricing._`;
                       <button
                         type="button"
                         key={p}
-                        className={`inline-flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-md font-sans text-[10px] sm:text-xs font-semibold transition-all active:scale-95 cursor-pointer ${
+                        className={`inline-flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-[5px] font-sans text-[10px] sm:text-xs font-semibold transition-all active:scale-95 cursor-pointer ${
                           isSelected
                             ? "bg-[#C97F2C] text-white shadow-xs"
                             : "bg-[#FAF6F0] text-[#123038] hover:bg-[#F2ECE1] border border-border-light"
@@ -295,7 +310,7 @@ _Please share custom tour plan options and pricing._`;
                 <textarea
                   rows={2}
                   placeholder="Tell us about special occasions (anniversary, birthday, food choices)..."
-                  className="w-full px-3 sm:px-3.5 py-2 rounded-lg border border-border-light bg-[#FAF6F0] font-sans text-xs sm:text-sm text-text-main focus:bg-white focus:border-[#C97F2C] focus:outline-none transition-colors resize-none"
+                  className="w-full px-3 sm:px-3.5 py-2 rounded-[5px] border border-border-light bg-[#FAF6F0] font-sans text-xs sm:text-sm text-text-main focus:bg-white focus:border-[#C97F2C] focus:outline-none transition-colors resize-none"
                   value={formData.notes}
                   onChange={(e) =>
                     setFormData({ ...formData, notes: e.target.value })
@@ -306,7 +321,7 @@ _Please share custom tour plan options and pricing._`;
               {/* Submit CTA */}
               <button
                 type="submit"
-                className="mt-1 sm:mt-2 w-full inline-flex items-center justify-center gap-2 px-6 py-3 sm:py-3.5 rounded-lg bg-[#25D366] hover:bg-[#20bd5a] text-white font-sans font-bold text-xs sm:text-sm shadow-md transition-all active:scale-[0.99] cursor-pointer"
+                className="mt-1 sm:mt-2 w-full inline-flex items-center justify-center gap-2 px-6 py-3 sm:py-3.5 rounded-[5px] bg-[#25D366] hover:bg-[#20bd5a] text-white font-sans font-bold text-xs sm:text-sm shadow-md transition-all active:scale-[0.99] cursor-pointer"
               >
                 <MessageCircle size={17} />
                 <span>Get Tour Plan on WhatsApp</span>

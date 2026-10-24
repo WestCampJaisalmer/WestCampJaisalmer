@@ -58,7 +58,7 @@ export default function FloatingButtons() {
       <a
         href={telHref}
         aria-label={`Call ${settings.phone}`}
-        className="pointer-events-auto group relative w-9.5 h-9.5 sm:w-11 sm:h-11 rounded-full bg-gradient-to-tr from-[#123038] via-[#1A4550] to-[#123038] border-2 border-[#C97F2C] text-[#C97F2C] shadow-md shadow-[#123038]/30 hover:shadow-lg hover:shadow-[#C97F2C]/30 flex items-center justify-center transition-all duration-300 hover:scale-108 active:scale-95 cursor-pointer"
+        className="pointer-events-auto group relative w-11 h-11 sm:w-11 sm:h-11 rounded-full bg-gradient-to-tr from-[#123038] via-[#1A4550] to-[#123038] border-2 border-[#C97F2C] text-[#C97F2C] shadow-md shadow-[#123038]/30 hover:shadow-lg hover:shadow-[#C97F2C]/30 flex items-center justify-center transition-all duration-300 hover:scale-108 active:scale-95 cursor-pointer"
       >
         {/* Subtle pulsing gold ring */}
         <span className="absolute -inset-0.5 rounded-full bg-[#C97F2C]/35 animate-ping opacity-60 pointer-events-none" />

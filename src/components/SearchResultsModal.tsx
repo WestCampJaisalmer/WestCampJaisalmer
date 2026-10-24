@@ -51,6 +51,21 @@ export default function SearchResultsModal({
     }
   }, [isOpen, searchParams]);
 
+  // Lock body scroll when modal is open and handle Escape key
+  useEffect(() => {
+    if (!isOpen) return;
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.body.style.overflow = prevOverflow;
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   // Aggregate listings
@@ -127,36 +142,36 @@ export default function SearchResultsModal({
 
   return (
     <div 
-      className="fixed inset-0 z-[1000] flex items-center justify-center p-2.5 sm:p-4 md:p-6 bg-[#0b191e]/80 backdrop-blur-md animate-in fade-in duration-200" 
+      className="fixed inset-0 z-[1050] flex items-center justify-center p-2.5 sm:p-4 md:p-6 bg-[#0b191e]/80 backdrop-blur-md animate-in fade-in duration-200" 
       onClick={onClose}
     >
       <div 
-        className="relative w-full max-w-3xl max-h-[92vh] sm:max-h-[88vh] bg-white rounded-xl sm:rounded-2xl shadow-2xl flex flex-col p-3.5 sm:p-6 md:p-8 overflow-hidden border border-border-light animate-in zoom-in-95 duration-200" 
+        className="relative w-full max-w-3xl max-h-[92vh] sm:max-h-[88vh] bg-white rounded-2xl shadow-2xl flex flex-col p-3 sm:p-6 md:p-8 overflow-hidden border border-border-light animate-in zoom-in-95 duration-200" 
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close Button */}
         <button 
-          className="absolute top-3 right-3 sm:top-5 sm:right-5 z-10 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-cream border border-border-light flex items-center justify-center text-text-muted hover:text-text-main hover:bg-cream-alt hover:rotate-90 transition duration-300" 
+          className="absolute top-2.5 right-2.5 sm:top-5 sm:right-5 z-10 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-cream border border-border-light flex items-center justify-center text-text-muted hover:text-text-main hover:bg-cream-alt hover:rotate-90 transition duration-300" 
           onClick={onClose} 
           aria-label="Close modal"
         >
-          <X size={18} />
+          <X size={17} />
         </button>
 
         {/* Modal Header */}
-        <div className="mb-3 sm:mb-4 shrink-0">
-          <h3 className="pr-10 sm:pr-12 font-serif text-lg sm:text-2xl md:text-3xl font-bold text-teal tracking-tight leading-tight">
+        <div className="mb-2.5 sm:mb-4 shrink-0">
+          <h3 className="pr-9 sm:pr-12 font-serif text-base sm:text-2xl md:text-3xl font-bold text-teal tracking-tight leading-snug">
             Explore Jaisalmer Stays & Adventures
           </h3>
-          <p className="text-[11px] sm:text-xs md:text-sm text-text-muted mt-0.5 sm:mt-1 mb-2.5 sm:mb-3.5 font-sans">
+          <p className="text-[11px] sm:text-xs md:text-sm text-text-muted mt-0.5 sm:mt-1 mb-2 sm:mb-3.5 font-sans">
             {searchParams?.checkIn 
               ? `Showing availability for ${searchParams.guests || 2} guests` 
               : "Find handpicked royal havelis, luxury desert tents, safaris & tour packages"}
           </p>
 
           {/* Search bar */}
-          <div className="flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-2 sm:py-2.5 bg-cream/40 border border-border-light rounded-full focus-within:border-gold focus-within:ring-2 focus-within:ring-gold/20 transition mb-2.5 sm:mb-3">
-            <Search size={16} className="text-gold shrink-0 sm:w-[18px] sm:h-[18px]" />
+          <div className="flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-1.5 sm:py-2.5 bg-cream/40 border border-border-light rounded-full focus-within:border-gold focus-within:ring-2 focus-within:ring-gold/20 transition mb-2 sm:mb-3">
+            <Search size={15} className="text-gold shrink-0 sm:w-[18px] sm:h-[18px]" />
             <input
               type="text"
               placeholder="Search by name, dunes, fort, haveli..."

@@ -25,7 +25,7 @@ export default async function PanelLayout({ children }: { children: React.ReactN
     <>
       <Sidebar user={{ name: user.name, email: user.email, role: user.role }} content={content} newEnquiries={row?.n ?? 0} />
       <main className="min-h-screen lg:pl-64">
-        <div className="mx-auto w-full max-w-[1280px] px-4 py-6 sm:px-6 lg:px-8 lg:py-8">{children}</div>
+        <div className="mx-auto w-full max-w-[1280px] px-3.5 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-8">{children}</div>
       </main>
     </>
   );

@@ -40,7 +40,7 @@ export default function Sidebar({ user, content, newEnquiries }: Props) {
       <Link
         href={href}
         aria-current={active ? "page" : undefined}
-        className={`group flex items-center gap-3 rounded-sm px-3 py-2 text-[13.5px] font-medium transition ${
+        className={`group flex items-center gap-3 rounded-sm px-3 py-2 text-[13.5px] font-medium transition my-2 ${
           active ? "bg-gold text-white shadow-gold" : "text-white/75 hover:bg-white/10 hover:text-white"
         }`}
       >
@@ -72,7 +72,7 @@ export default function Sidebar({ user, content, newEnquiries }: Props) {
       <nav aria-label="Admin" className="flex-1 overflow-y-auto px-3 pb-4">
         <Heading>Overview</Heading>
         <Item href="/admin" icon={LayoutDashboard} label="Dashboard" exact />
-        <Item href="/admin/enquiries" icon={Inbox} label="Enquiries" badge={newEnquiries} />
+        <Item href="/admin/enquiries" icon={Inbox} label="Inquiries" badge={newEnquiries} />
 
         <Heading>Website content</Heading>
         {user.role !== "viewer" && <Item href="/admin/home-page" icon={LayoutTemplate} label="Home page" />}
@@ -121,10 +121,13 @@ export default function Sidebar({ user, content, newEnquiries }: Props) {
       <div className="sticky top-0 z-30 flex items-center justify-between border-b border-white/10 bg-deep-teal px-4 py-3 lg:hidden">
         <div className="flex items-center gap-2.5">
           <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gold font-serif font-bold text-white">W</div>
-          <span className="font-serif text-[15px] font-bold text-white">Admin</span>
+          <span className="font-serif text-[15px] font-bold text-white">West Camp Admin</span>
         </div>
-        <button onClick={() => setOpen(true)} className="cursor-pointer rounded-sm p-2 text-white" aria-label="Open menu">
+        <button onClick={() => setOpen(true)} className="relative cursor-pointer rounded-sm p-2 text-white" aria-label="Open menu">
           <Menu size={22} />
+          {newEnquiries > 0 && (
+            <span className="absolute right-1.5 top-1.5 flex h-2 w-2 rounded-full bg-gold ring-2 ring-deep-teal" />
+          )}
         </button>
       </div>
 

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useMemo, useState, useTransition } from "react";
-import { ArrowDown, ArrowUp, Check, Eye, EyeOff, Loader2, Pencil, Search, Star, Trash2, X } from "lucide-react";
+import { ArrowDown, ArrowUp, Check, Eye, EyeOff, Loader2, Pencil, Search, Star, Tags, Trash2, X } from "lucide-react";
 import { bulkResource, deleteResource, moveResource, reviewDecision, toggleResourceFlag } from "@/app/admin/actions/content";
 import type { ResourceDef } from "@/lib/resources";
 import { EmptyState, Pill } from "@/components/admin/ui";
@@ -76,22 +76,24 @@ export default function ResourceTable({ def, rows, canWrite, categoryLabels, can
 
   return (
     <div>
-      <div className="flex flex-wrap items-center gap-3 border-b border-border-light p-4">
-        <div className="relative max-w-sm flex-1">
+      <div className="flex flex-wrap items-center justify-between gap-2.5 border-b border-border-light p-3 sm:gap-3 sm:p-4">
+        <div className="relative w-full sm:max-w-sm sm:flex-1">
           <Search size={15} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-text-light" />
           <input value={q} onChange={(e) => setQ(e.target.value)} placeholder={`Search ${def.plural.toLowerCase()}…`} className="adm-input pl-9" aria-label={`Search ${def.plural}`} />
         </div>
-        <span className="text-xs text-text-muted">{filtered.length} of {rows.length}</span>
-        {pending && <Loader2 size={16} className="animate-spin text-gold" />}
+        <div className="flex w-full items-center justify-between gap-2 text-xs text-text-muted sm:w-auto sm:justify-end">
+          <span>{filtered.length} of {rows.length}</span>
+          {pending && <Loader2 size={15} className="animate-spin text-gold" />}
+        </div>
       </div>
 
       {canWrite && selected.size > 0 && (
-        <div className="flex flex-wrap items-center gap-2 border-b border-gold/30 bg-gold/10 px-4 py-2.5 text-sm">
+        <div className="sticky top-0 z-10 flex flex-wrap items-center gap-2 border-b border-gold/30 bg-gold/15 px-3.5 py-2.5 text-xs sm:gap-3 sm:px-4 sm:text-sm">
           <span className="font-semibold text-deep-teal">{selected.size} selected</span>
-          <button className="adm-btn-ghost adm-btn-sm" disabled={pending} onClick={() => onBulk("show")}><Eye size={13} /> Show</button>
-          <button className="adm-btn-ghost adm-btn-sm" disabled={pending} onClick={() => onBulk("hide")}><EyeOff size={13} /> Hide</button>
-          <button className="adm-btn-danger adm-btn-sm" disabled={pending} onClick={() => onBulk("delete")}><Trash2 size={13} /> Delete</button>
-          <button className="ml-auto text-xs font-semibold text-text-muted hover:text-deep-teal" onClick={() => setSelected(new Set())}>Clear</button>
+          <button className="adm-btn-ghost adm-btn-sm !py-1 text-xs" disabled={pending} onClick={() => onBulk("show")}><Eye size={13} /> Show</button>
+          <button className="adm-btn-ghost adm-btn-sm !py-1 text-xs" disabled={pending} onClick={() => onBulk("hide")}><EyeOff size={13} /> Hide</button>
+          <button className="adm-btn-danger adm-btn-sm !py-1 text-xs" disabled={pending} onClick={() => onBulk("delete")}><Trash2 size={13} /> Delete</button>
+          <button className="ml-auto font-semibold text-text-muted hover:text-deep-teal" onClick={() => setSelected(new Set())}>Clear</button>
         </div>
       )}
       {msg && (
@@ -104,11 +106,178 @@ export default function ResourceTable({ def, rows, canWrite, categoryLabels, can
         <EmptyState
           title={rows.length ? "Nothing matches your search" : `No ${def.plural.toLowerCase()} yet`}
           text={rows.length ? undefined : `Add your first ${def.singular.toLowerCase()} to show it on the website.`}
-          action={!rows.length && canWrite ? <Link href={`/admin/content/${def.key}/new`} className="adm-btn-primary">Add {def.singular.toLowerCase()}</Link> : undefined}
+          action={!rows.length && canWrite ? <Link href={`/admin/content/${def.key}/new`} className="adm-btn-primary">{def.key === "gallery-categories" ? "Add" : `Add ${def.singular.toLowerCase()}`}</Link> : undefined}
         />
       ) : (
-        <div className="overflow-x-auto">
-          <table className="w-full min-w-[720px]">
+        <>
+          {/* Mobile card list view */}
+          {canWrite && (
+            <div className="flex items-center justify-between border-b border-border-light bg-cream/40 px-3.5 py-2 text-xs md:hidden">
+              <label className="flex cursor-pointer items-center gap-2 font-medium text-text-muted">
+                <input
+                  type="checkbox"
+                  checked={allOn}
+                  onChange={() => setSelected(allOn ? new Set() : new Set(filtered.map((r) => r.id)))}
+                  className="h-4 w-4 cursor-pointer accent-gold"
+                />
+                <span>Select all</span>
+              </label>
+              <span className="text-[11px] text-text-light">{filtered.length} {def.plural.toLowerCase()}</span>
+            </div>
+          )}
+
+          <div className="divide-y divide-border-light md:hidden">
+            {filtered.map((r) => {
+              const idx = rows.findIndex((x) => x.id === r.id);
+              const busy = busyId === r.id;
+              return (
+                <div
+                  key={r.id}
+                  className={`p-3.5 transition hover:bg-cream/40 ${!r.active && !(isReviews && r.status === "pending") ? "opacity-75" : ""} ${selected.has(r.id) ? "bg-gold/5" : ""}`}
+                >
+                  {/* Top row: Checkbox, thumbnail, title & status */}
+                  <div className="flex items-start gap-2.5">
+                    {canWrite && (
+                      <input
+                        type="checkbox"
+                        checked={selected.has(r.id)}
+                        onChange={() => setSelected((s) => { const n = new Set(s); n.has(r.id) ? n.delete(r.id) : n.add(r.id); return n; })}
+                        className="mt-1 h-4 w-4 shrink-0 cursor-pointer accent-gold"
+                        aria-label={`Select ${r[def.titleField]}`}
+                      />
+                    )}
+                    {thumb && r[thumb] ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={r[thumb]}
+                        alt=""
+                        loading="lazy"
+                        className="h-12 w-14 shrink-0 rounded-sm bg-cream-alt object-cover"
+                      />
+                    ) : isReviews ? (
+                      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-cream-alt text-xs font-bold text-gold-dark">
+                        {r[def.titleField]?.charAt(0).toUpperCase() || "G"}
+                      </div>
+                    ) : (
+                      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded bg-cream-alt text-gold">
+                        <Tags size={16} />
+                      </div>
+                    )}
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-start justify-between gap-1.5">
+                        <Link href={`/admin/content/${def.key}/${r.id}`} className="truncate text-sm font-semibold text-deep-teal hover:text-gold">
+                          {r[def.titleField]}
+                        </Link>
+                        <div className="flex shrink-0 flex-wrap gap-1">
+                          {isReviews && r.status === "pending" ? (
+                            <Pill tone="gold">Awaiting approval</Pill>
+                          ) : isReviews && r.status === "rejected" ? (
+                            <Pill tone="muted">Rejected</Pill>
+                          ) : (
+                            <Pill tone={r.active ? "green" : "muted"}>{r.active ? "Live" : "Hidden"}</Pill>
+                          )}
+                          {def.hasFeatured && r.featured && <Pill tone="gold">Featured</Pill>}
+                        </div>
+                      </div>
+                      {def.subtitleField && <p className="truncate text-xs text-text-muted">{r[def.subtitleField]}</p>}
+                    </div>
+                  </div>
+
+                  {/* Col fields / meta */}
+                  {colFields.length > 0 && (
+                    <div className="mt-2.5 flex flex-wrap items-center gap-1.5 text-xs">
+                      {colFields.map((f) => (
+                        <div key={f.name} className="inline-flex items-center gap-1 rounded bg-cream/70 px-2 py-0.5 text-xs text-text-muted">
+                          <span className="text-[10px] font-bold uppercase text-text-light">{f.label.replace(/ \(₹\)| per night \(₹\)/, "")}:</span>
+                          <span>{cellValue(def, f.name, r, categoryLabels)}</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {isReviews && (
+                    <div className="mt-2 rounded-sm bg-cream/60 p-2 text-xs">
+                      <span className="line-clamp-2 block text-text-main/80">&ldquo;{r.review}&rdquo;</span>
+                      {(r.fromGuest || r.guestEmail) && (
+                        <span className="mt-1 block text-[10px] text-text-light">
+                          Submitted by guest{r.guestEmail ? ` · ${r.guestEmail}` : ""}{r.submittedAt ? ` · ${r.submittedAt}` : ""}
+                        </span>
+                      )}
+                    </div>
+                  )}
+
+                  {/* Actions row */}
+                  {canWrite && (
+                    <div className="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-border-light/60 pt-2 text-xs">
+                      <div className="flex items-center gap-1">
+                        {/* Reorder buttons */}
+                        <button
+                          title="Move up" aria-label="Move up" disabled={pending || searching || !canReorder || idx === 0}
+                          onClick={() => run(r.id, () => moveResource(def.key, r.id, "up"))}
+                          className="cursor-pointer rounded-sm border border-border-light bg-white p-1.5 text-text-muted hover:bg-cream-alt hover:text-deep-teal disabled:cursor-not-allowed disabled:opacity-30"
+                        ><ArrowUp size={13} /></button>
+                        <button
+                          title="Move down" aria-label="Move down" disabled={pending || searching || !canReorder || idx === rows.length - 1}
+                          onClick={() => run(r.id, () => moveResource(def.key, r.id, "down"))}
+                          className="cursor-pointer rounded-sm border border-border-light bg-white p-1.5 text-text-muted hover:bg-cream-alt hover:text-deep-teal disabled:cursor-not-allowed disabled:opacity-30"
+                        ><ArrowDown size={13} /></button>
+
+                        {/* Featured toggle */}
+                        {def.hasFeatured && (
+                          <button
+                            title={r.featured ? "Remove featured" : "Featured"} aria-label="Toggle featured" disabled={pending}
+                            onClick={() => run(r.id, () => toggleResourceFlag(def.key, r.id, "featured"))}
+                            className={`cursor-pointer rounded-sm border p-1.5 ${r.featured ? "border-gold/50 bg-gold/15 text-gold-dark" : "border-border-light bg-white text-text-muted hover:text-gold"}`}
+                          ><Star size={13} className={r.featured ? "fill-gold text-gold" : ""} /></button>
+                        )}
+
+                        {/* Active visibility toggle */}
+                        <button
+                          title={r.active ? "Hide from website" : "Show on website"} aria-label="Toggle visibility" disabled={pending}
+                          onClick={() => run(r.id, () => toggleResourceFlag(def.key, r.id, "active"))}
+                          className={`cursor-pointer rounded-sm border p-1.5 ${r.active ? "border-emerald-200 bg-emerald-50 text-emerald-700" : "border-border-light bg-white text-text-muted"}`}
+                        >
+                          {busy ? <Loader2 size={13} className="animate-spin" /> : r.active ? <Eye size={13} /> : <EyeOff size={13} />}
+                        </button>
+                      </div>
+
+                      {/* Right actions: Edit, Delete, Moderation */}
+                      <div className="flex items-center gap-1.5">
+                        {isReviews && r.status !== "approved" && (
+                          <button
+                            title="Approve" disabled={pending}
+                            onClick={() => run(r.id, () => reviewDecision(r.id, "approve"))}
+                            className="adm-btn adm-btn-sm !py-1 text-xs bg-emerald-600 text-white hover:bg-emerald-700"
+                          ><Check size={12} /> Approve</button>
+                        )}
+                        {isReviews && r.status === "pending" && (
+                          <button
+                            title="Reject" disabled={pending}
+                            onClick={() => run(r.id, () => reviewDecision(r.id, "reject"))}
+                            className="adm-btn-ghost adm-btn-sm !py-1 text-xs"
+                          ><X size={12} /> Reject</button>
+                        )}
+                        <Link
+                          href={`/admin/content/${def.key}/${r.id}`}
+                          className="adm-btn-ghost adm-btn-sm inline-flex items-center gap-1 !py-1 text-xs font-semibold text-deep-teal hover:border-gold hover:text-gold"
+                        >
+                          <Pencil size={12} /> Edit
+                        </Link>
+                        <button
+                          title="Delete" aria-label="Delete" disabled={pending} onClick={() => onDelete(r)}
+                          className="cursor-pointer rounded-sm border border-red-200 bg-white p-1.5 text-red-600 hover:bg-red-50"
+                        ><Trash2 size={13} /></button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Desktop/tablet table view */}
+          <div className="hidden md:block overflow-x-auto">
+            <table className="w-full min-w-[720px]">
             <thead className="border-b border-border-light bg-cream">
               <tr>
                 {canWrite && (
@@ -147,14 +316,22 @@ export default function ResourceTable({ def, rows, canWrite, categoryLabels, can
                     )}
                     <td className="adm-td">
                       <div className="flex items-center gap-3">
-                        {thumb && (
+                        {thumb && r[thumb] ? (
                           // eslint-disable-next-line @next/next/no-img-element
                           <img
-                            src={r[thumb] || "/images/Jaisalmer_logo.png"}
+                            src={r[thumb]}
                             alt=""
                             loading="lazy"
                             className="h-11 w-14 shrink-0 rounded-sm bg-cream-alt object-cover"
                           />
+                        ) : isReviews ? (
+                          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-cream-alt text-xs font-bold text-gold-dark">
+                            {r[def.titleField]?.charAt(0).toUpperCase() || "G"}
+                          </div>
+                        ) : (
+                          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded bg-cream-alt text-gold">
+                            <Tags size={16} />
+                          </div>
                         )}
                         <div className="min-w-0">
                           <Link href={`/admin/content/${def.key}/${r.id}`} className="block truncate font-semibold text-deep-teal hover:text-gold">
@@ -247,6 +424,7 @@ export default function ResourceTable({ def, rows, canWrite, categoryLabels, can
             </tbody>
           </table>
         </div>
+      </>
       )}
     </div>
   );
