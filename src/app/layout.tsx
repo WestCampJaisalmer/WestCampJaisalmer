@@ -39,6 +39,32 @@ import FloatingButtons from "@/components/FloatingButtons";
 import AnnouncementBar from "@/components/AnnouncementBar";
 import { getSiteContent } from "@/lib/content";
 
+/**
+ * Chrome's built-in Translate (e.g. a phone set to Hindi) swaps page text for <font> tags, but React keeps
+ * pointing at the old text nodes. The next time React adds or removes something next to one of them
+ * (a button switching to "Uploading…" / "Saving…") the browser throws and the whole page becomes
+ * "This page couldn't load". This makes those two DOM calls tolerant instead of crashing.
+ * Background: https://github.com/facebook/react/issues/11538
+ */
+const TRANSLATE_GUARD = `(function(){
+  if (typeof Node !== "function" || !Node.prototype) return;
+  var remove = Node.prototype.removeChild, insert = Node.prototype.insertBefore;
+  Node.prototype.removeChild = function (child) {
+    if (child && child.parentNode !== this) {
+      if (child.parentNode && this.contains(child)) return remove.call(child.parentNode, child);
+      return child;
+    }
+    return remove.apply(this, arguments);
+  };
+  Node.prototype.insertBefore = function (node, ref) {
+    if (ref && ref.parentNode !== this) {
+      while (ref && ref.parentNode !== this) ref = ref.parentNode;
+      return insert.call(this, node, ref || null);
+    }
+    return insert.apply(this, arguments);
+  };
+})();`;
+
 export default async function RootLayout({
   children,
 }: Readonly<{
@@ -48,6 +74,8 @@ export default async function RootLayout({
   return (
     <html lang="en" className={`${playfair.variable} ${inter.variable} ${autumnScript.variable}`}>
       <head>
+        {/* Must run before React hydrates, so it is an inline script at the top of <head>. */}
+        <script dangerouslySetInnerHTML={{ __html: TRANSLATE_GUARD }} />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link 

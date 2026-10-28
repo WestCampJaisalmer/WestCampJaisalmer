@@ -77,7 +77,8 @@ export default function ImageField({ name, label, initial = "", required, help, 
                 onClick={() => input.current?.click()}
               >
                 {busy ? <Loader2 size={12} className="animate-spin" /> : <UploadCloud size={12} />}
-                <span>{busy ? "…" : "Upload"}</span>
+                {/* keyed so the label is re-created (and re-translated) instead of edited in place */}
+                <span key={busy ? "busy" : "idle"}>{busy ? "…" : "Upload"}</span>
               </button>
               <button
                 type="button"
@@ -151,7 +152,7 @@ export default function ImageField({ name, label, initial = "", required, help, 
           <div className="flex flex-wrap gap-2">
             <button type="button" className="adm-btn-dark adm-btn-sm flex-1 sm:flex-none justify-center" disabled={busy} onClick={() => input.current?.click()}>
               {busy ? <Loader2 size={14} className="animate-spin" /> : <UploadCloud size={14} />}
-              {busy ? "Uploading…" : "Upload"}
+              <span key={busy ? "busy" : "idle"}>{busy ? "Uploading…" : "Upload"}</span>
             </button>
             <button type="button" className="adm-btn-ghost adm-btn-sm flex-1 sm:flex-none justify-center" disabled={busy} onClick={() => setPick(true)}>
               <FolderOpen size={14} /> Media library

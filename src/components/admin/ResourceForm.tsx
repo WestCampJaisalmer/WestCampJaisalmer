@@ -96,6 +96,7 @@ export default function ResourceForm({ def, id, item }: Props) {
 
   const active = vals ? vals.active === "on" : item?.active ?? true;
   const featured = vals ? vals.featured === "on" : item?.featured ?? false;
+  const saveLabel = pending ? "Saving…" : id ? "Save changes" : def.key === "gallery-categories" ? "Add" : `Add ${def.singular.toLowerCase()}`;
 
   return (
     <form action={action} className="grid gap-5 sm:gap-6 lg:grid-cols-3">
@@ -134,7 +135,7 @@ export default function ResourceForm({ def, id, item }: Props) {
           <div className="mt-5 flex justify-between gap-2">
             <button type="submit" disabled={pending} className="adm-btn-primary flex-1">
               {pending ? <Loader2 size={16} className="animate-spin" /> : <Save size={16} />}
-              {pending ? "Saving…" : id ? "Save changes" : def.key === "gallery-categories" ? "Add" : `Add ${def.singular.toLowerCase()}`}
+              <span key={pending ? "busy" : "idle"}>{saveLabel}</span>
             </button>
             <Link href={`/admin/content/${def.key}`} className="adm-btn-ghost flex-1">Cancel</Link>
           </div>
@@ -145,7 +146,7 @@ export default function ResourceForm({ def, id, item }: Props) {
         <div className="sticky bottom-4 z-20 flex items-center gap-2 rounded-lg border border-border-light bg-white/95 p-2.5 shadow-hover backdrop-blur-sm lg:hidden">
           <button type="submit" disabled={pending} className="adm-btn-primary flex-1 justify-center !py-2 text-xs font-semibold">
             {pending ? <Loader2 size={14} className="animate-spin" /> : <Save size={14} />}
-            {pending ? "Saving…" : id ? "Save changes" : def.key === "gallery-categories" ? "Add" : `Add ${def.singular.toLowerCase()}`}
+            <span key={pending ? "busy" : "idle"}>{saveLabel}</span>
           </button>
           <Link href={`/admin/content/${def.key}`} className="adm-btn-ghost !py-2 text-xs">Cancel</Link>
         </div>
