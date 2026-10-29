@@ -153,7 +153,7 @@ export default function Footer() {
             <span>•</span>
             <a href="#" className="hover:text-gold transition-colors">Terms of Service</a>
             <span>•</span>
-            <a href="#" className="hover:text-gold transition-colors">Sitemap</a>
+            <a href="/sitemap.xml" className="hover:text-gold transition-colors">Sitemap</a>
           </div>
         </div>
       </div>
